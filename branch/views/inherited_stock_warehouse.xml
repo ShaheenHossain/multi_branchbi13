@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_warehouse_inherit_branch" model="ir.ui.view">
+            <field name="name">view.warehouse.inherit.branch</field>
+            <field name="model">stock.warehouse</field>
+            <field name="inherit_id" ref="stock.view_warehouse"/>
+            <field name="arch" type="xml">
+                <field name="code" position="after">
+                    <!-- Add your fields or attributes here -->
+                        <field name="branch_id"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>
