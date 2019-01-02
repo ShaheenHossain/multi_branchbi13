@@ -9,8 +9,8 @@
             <field name="arch" type="xml">
                 <xpath expr="//sheet/notebook/page[2]/group[1]" position="before">
                     <!-- Add your fields or attributes here -->
-                    <group string="Allowed Branch" name="branch">
-                        <field name="branch_ids" nolabel="1" widget="many2many_tags"/>
+                    <group name="branch">
+                        <field name="branch_ids" widget="many2many_tags"/>
                     </group>
                     <group>
                         <field name="branch_id"/>
