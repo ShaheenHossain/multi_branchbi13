@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="view_inventory_report_movement_excel" model="ir.ui.view">
+            <field name="name">inventory.movement.excel.name</field>
+            <field name="model">inventory.movement.excel</field>
+            <field name="arch" type="xml">
+                <form string="xls File">
+                    <group>
+                        <field name="file_name" invisible="1"/>
+                        <field name="excel_file" readonly="1" filename="file_name"/>
+                    </group>
+                     <footer>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+     </record>
+
+
+
+        <record id="view_wizard_inventory_movement_wizard" model="ir.ui.view">
+            <field name="name">Inventory Movement Report</field>
+            <field name="model">inventory.movement.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Inventory Movement">
+               
+                 <group>
+                 	<group>
+                 		<field name="start_date"/>
+                 	</group>
+                 	<group>
+                 		<field name="end_date"/>
+                 	</group>
+
+                 </group>
+                 <group>
+                 	<field name='warehouse_id'/>
+                 </group>
+            
+                    <footer>
+                        <button name="print_pdf" string="PDF" type="object"
+                            class="btn-primary"/>
+                        <button name="print_xls" string="XLS" type="object"
+                            class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer> 
+                </form>
+            </field>
+        </record>
+
+        <record id="view_wizard_inventory_pivot_movement" model="ir.ui.view">
+            <field name="name">Inventory Movement</field>
+            <field name="model">inventory.movement.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Inventory Movement">
+               
+                 <group>
+                    <group>
+                        <field name="start_date"/>
+                    </group>
+                    <group>
+                        <field name="end_date"/>
+                    </group>
+
+                 </group>
+                 <group>
+                    <field name='warehouse_id'/>
+                 </group>
+            
+                    <footer>
+                        <button name="print_pivot" string="Generate" type="object"
+                            class="btn-primary"/>
+                        
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer> 
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_inventory_movement_report" model="ir.actions.act_window">
+            <field name="name">Inventory Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">inventory.movement.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_wizard_inventory_movement_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+         <record id="action_view_inventory_pivot_movement" model="ir.actions.act_window">
+            <field name="name">Inventory Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">inventory.movement.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+             <field name="view_id" ref="view_wizard_inventory_pivot_movement"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem id="menu_print_inventory_movement_report" name="Inventory Movement PDF/XLS" action="action_view_inventory_movement_report"
+                  parent="stock.menu_warehouse_report"/>
+        
+        <menuitem id="menu_print_inventory_movement_pivot" name="Inventory Movement Pivot" action="action_view_inventory_pivot_movement"
+                  parent="stock.menu_warehouse_report"/>
+        
+
+</odoo>

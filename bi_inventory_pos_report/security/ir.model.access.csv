@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_inventory_pivot_report,access.inventory.pivot.report,model_inventory_pivot_report,,1,1,1,1
+access_inventory_movement_report,access.inventory.movement.report,model_inventory_movement_report,,1,1,1,1
+access_pos_pivot_report,access.pos.pivot.report,model_pos_pivot_report,,1,1,1,1
+access_pos_pivot_fast_moving,access.pos.pivot.fast.moving,model_pos_pivot_fast_moving,,1,1,1,1
+
+
+
+
