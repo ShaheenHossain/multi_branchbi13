@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <template id="inventory_movement_pdf_template">
+            <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                
+
+
+            <div class="page">
+
+
+                
+                <div class ="text-center">
+                    <h2></h2>
+                </div>
+                
+                        
+
+                        <br/>
+                <br/>
+                <table class="table table-condensed">
+                            <tr>
+                            
+                            <th style="border: 0px ;" class="text-left">From Date : <span t-esc="data['start_date']"/></th>
+                            
+                            <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                            <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                            <th style="border: 0px ;" class="text-left">To Date : <span t-esc="data['end_date']"/></th>
+                            
+                        </tr>
+                </table>
+
+               
+                
+                   
+                    <br/>
+                    <br/>
+                        <table class="table table-condensed">
+                            <tr>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Product</th>
+                                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Description</th>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Opening Balance Qty</th>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Received Qty</th>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Sales Qty</th>
+                            <th style="border: 3px solid black;background-color:silver;" class="text-center">Adjesment Qty</th>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Balance</th>
+                            
+                            </tr>
+                            <t t-set="total_open" t-value="0"/>
+                            <t t-set="total_rcv" t-value="0"/>
+                            <t t-set="total_sl" t-value="0"/>
+                            <t t-set="total_adj" t-value="0"/>
+                            <t t-set="total_bal" t-value="0"/>
+                                    <tr t-foreach="get_lines" t-as="line">
+                                        	<td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['pro_name']"/></td>
+                                        	<td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['description']"/></td>
+                                        	<td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['opening']"/></td>
+
+                                            <t t-set="total_open" t-value="total_open + line['opening']"/>
+
+                                            <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['received']"/></td>
+
+                                            <t t-set="total_rcv" t-value="total_rcv + line['received']"/>
+
+                                         <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['sale_qty']"/></td>
+
+                                         <t t-set="total_sl" t-value="total_sl + line['sale_qty']"/>
+
+
+                                       <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['adjestment']"/></td>
+
+                                       <t t-set="total_adj" t-value="total_adj + line['adjestment']"/>
+
+
+                                       <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['balance']"/></td>
+
+                                       <t t-set="total_bal" t-value="total_bal + line['balance']"/>
+
+                                     
+                                    </tr>
+
+
+                                    <tr>
+                                        <td></td>
+                                        
+                                        <td style="border-bottom: 2px solid black;"><strong>Total = </strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_open"/></strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_rcv"/></strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_sl"/></strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_adj"/></strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_bal"/></strong></td>
+                                    </tr>
+                            
+                            
+                        </table>
+                    
+                
+                
+            </div>
+            </t>
+            </t>
+        </template>
+
+</odoo>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <template id="inventory_pdf_template">
+            <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                
+
+
+            <div class="page">
+
+
+                
+                <div class ="text-center">
+                    <h2></h2>
+                </div>
+                
+                        
+
+                        <br/>
+                <br/>
+                <table class="table table-condensed">
+                            <tr>
+                            
+                            <th style="border: 0px ;" class="text-left">Start Date : <span t-esc="data['start_date']"/></th>
+                            
+                            <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;</th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                            <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                            <th style="border: 0px ;" class="text-left">End Date : <span t-esc="data['end_date']"/></th>
+                            
+                        </tr>
+                </table>
+
+               
+                
+                   
+                    <br/>
+                    <br/>
+                        <table class="table table-condensed">
+                            <tr>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Warehouse</th>
+                                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Source Document</th>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Transfer No</th>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Date</th>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Product</th>
+                            <th style="border: 3px solid black;background-color:silver;" class="text-center">Description</th>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Qty</th>
+                            <t t-set="total" t-value="0"/>
+                            </tr>
+                                    <tr t-foreach="get_lines" t-as="line">
+                                        	<td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['warehouse_name']"/></td>
+                                        	<td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['source']"/></td>
+                                        	<td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['transfer']"/></td>
+                                            <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['date']"/></td>
+                                         <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['product']"/></td>
+                                       <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['description']"/></td>
+                                       <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['quantity']"/></td>
+                                       <t t-set="total" t-value="total + line['quantity']"/>
+                                     
+                                    </tr>
+
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                         <td></td>
+                                        <td style="border-bottom: 2px solid black;"><strong>Total = </strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total"/></strong></td>
+                                    </tr>
+                            
+                        </table>
+                    
+                
+                
+            </div>
+            </t>
+            </t>
+        </template>
+
+</odoo>

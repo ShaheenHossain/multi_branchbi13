@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_inventory_views_pivot" model="ir.ui.view">
+         <field name="name">inventory.pivot.report.name</field>
+         <field name="model">inventory.pivot.report</field>
+         <field name="arch" type="xml">
+             <pivot string="Inventory Analysis" disable_linking="True">
+                 <field name="product_id" type="measure"/>
+                 <field name="warehouse_id" type="row"/>
+                 <field name="source_doc" type="measure"/>
+                 <field name="transfer_no" type="measure"/>
+                 <field name="date" type="measure"/>
+                
+                 <field name="description" type="measure"/>
+                 <field name="quantity" type="measure"/>
+                  
+
+             </pivot>
+         </field>
+    </record>
+
+    <record id="view_inventory_movement_views_pivot" model="ir.ui.view">
+         <field name="name">inventory.movement.report.name</field>
+         <field name="model">inventory.movement.report</field>
+         <field name="arch" type="xml">
+             <pivot string="Inventory Movement" disable_linking="True">
+                 <field name="product_id" type="measure"/>
+                 <field name="description" type="row"/>
+                 <field name="opening" type="measure"/>
+                 <field name="recieved" type="measure"/>
+                 <field name="sale_qty" type="measure"/>
+                
+                 <field name="adjestment" type="measure"/>
+                 <field name="balance" type="measure"/>
+                  
+
+             </pivot>
+         </field>
+    </record>
+
+
+
+    <record id="view_pos_report_pivot" model="ir.ui.view">
+         <field name="name">pos.pivot.report.name</field>
+         <field name="model">pos.pivot.report</field>
+         <field name="arch" type="xml">
+             <pivot string="POS Pivot" disable_linking="True">
+                 <field name="product_id" type="row"/>
+                
+                 <field name="sale_qty" type="measure"/>
+                 <field name="price" type="measure"/>
+                 
+                 <field name="discount" type="measure"/>
+                <field name="net_sales" type="measure"/>
+                 <field name="vat" type="measure"/>
+                 
+                 <field name="total" type="measure"/>
+                  
+
+             </pivot>
+         </field>
+    </record>
+
+
+
+    <record id="view_pos_report_pivot_fast" model="ir.ui.view">
+         <field name="name">pos.pivot.fast.moving.name</field>
+         <field name="model">pos.pivot.fast.moving</field>
+         <field name="arch" type="xml">
+             <pivot string="POS Pivot" disable_linking="True">
+                 <field name="product_id" type="row"/>
+                
+                 <field name="sale_qty" type="measure"/>
+                 <field name="gross_price" type="measure"/>
+                 
+                 <field name="discount" type="measure"/>
+                 <field name="vat" type="measure"/>
+                <field name="net_sales" type="measure"/>
+                 
+                 
+                 
+                  
+
+             </pivot>
+         </field>
+    </record>
+</odoo>
