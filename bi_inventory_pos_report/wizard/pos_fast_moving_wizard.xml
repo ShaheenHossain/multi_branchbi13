@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="view_pos_excel_fast_wizard" model="ir.ui.view">
+            <field name="name">pos.report.excel.name</field>
+            <field name="model">pos.fast.moving.excel</field>
+            <field name="arch" type="xml">
+                <form string="xls File">
+                    <group>
+                        <field name="file_name" invisible="1"/>
+                        <field name="excel_file" readonly="1" filename="file_name"/>
+                    </group>
+                     <footer>
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+     </record>
+
+
+
+        <record id="view_wizard_pos_fast_movingreport" model="ir.ui.view">
+            <field name="name">POS Report</field>
+            <field name="model">pos.fast.moving.wizard</field>
+            <field name="arch" type="xml">
+                <form string="POS Report">
+               
+                 <group>
+                 	<group>
+                 		<field name="start_date"/>
+                 	</group>
+                 	<group>
+                 		<field name="end_date"/>
+                 	</group>
+
+                 </group>
+                 <group>
+                 	<field name='warehouse_id'/>
+                 </group>
+            
+                    <footer>
+                        <button name="print_pdf" string="PDF" type="object"
+                            class="btn-primary"/>
+                        <button name="print_xls" string="XLS" type="object"
+                            class="btn-primary"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer> 
+                </form>
+            </field>
+        </record>
+
+        <record id="view_wizard_pos_pivot_fast" model="ir.ui.view">
+            <field name="name">Pos Pivot</field>
+            <field name="model">pos.fast.moving.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Inventory Movement">
+               
+                 <group>
+                    <group>
+                        <field name="start_date"/>
+                    </group>
+                    <group>
+                        <field name="end_date"/>
+                    </group>
+
+                 </group>
+                 <group>
+                    <field name='warehouse_id'/>
+                 </group>
+            
+                    <footer>
+                        <button name="print_pivot" string="Generate" type="object"
+                            class="btn-primary"/>
+                        
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer> 
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_pos_fast_moving" model="ir.actions.act_window">
+            <field name="name">POS Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.fast.moving.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_wizard_pos_fast_movingreport"/>
+            <field name="target">new</field>
+        </record>
+
+         <record id="action_view_pos_fast_moving_pivot" model="ir.actions.act_window">
+            <field name="name">POS Pivot Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.fast.moving.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+             <field name="view_id" ref="view_wizard_pos_pivot_fast"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem id="menu_print_pos_fast_moving" name="Fast Moving Item Sales" action="action_view_pos_fast_moving"
+                  parent="point_of_sale.menu_point_rep"/>
+        
+        <menuitem id="menu_print_pos_fast_moving_pivot" name="Fast Moving Item Sales Pivot" action="action_view_pos_fast_moving_pivot"
+                  parent="point_of_sale.menu_point_rep"/>
+        
+
+</odoo>

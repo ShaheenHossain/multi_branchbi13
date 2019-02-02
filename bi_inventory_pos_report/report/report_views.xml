@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<report 
+            id="inventory_report_pdf"
+            string="Inventory Report"
+            model="inventory.report.wizard" 
+            report_type="qweb-pdf"
+            file="bi_inventory_pos_report.inventory_pdf_template" 
+            name="bi_inventory_pos_report.inventory_pdf_template"
+            
+            
+        />
+
+        <report 
+            id="inventory_movement_report_pdf"
+            string="Inventory Movement"
+            model="inventory.movement.wizard" 
+            report_type="qweb-pdf"
+            file="bi_inventory_pos_report.inventory_movement_pdf_template" 
+            name="bi_inventory_pos_report.inventory_movement_pdf_template"
+            
+            
+        />
+
+        <report 
+            id="pos_report_pdf"
+            string="POS Report"
+            model="pos.report.wizard" 
+            report_type="qweb-pdf"
+            file="bi_inventory_pos_report.pos_pdf_template" 
+            name="bi_inventory_pos_report.pos_pdf_template"
+            
+            
+        />
+
+        <report 
+            id="pos_fast_moving_report_pdf"
+            string="POS Fast Moving Report"
+            model="pos.fast.moving.wizard" 
+            report_type="qweb-pdf"
+            file="bi_inventory_pos_report.pos_fast_moving_pdf_template" 
+            name="bi_inventory_pos_report.pos_fast_moving_pdf_template"
+            
+            
+        />
+</odoo>
