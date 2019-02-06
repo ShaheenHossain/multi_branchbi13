@@ -23,7 +23,7 @@
             <field name="name">POS Report</field>
             <field name="model">pos.report.wizard</field>
             <field name="arch" type="xml">
-                <form string="POS Report">
+                <form string="Daily Close Report">
                
                  <group>
                  	<group>
@@ -53,7 +53,7 @@
             <field name="name">Pos Pivot</field>
             <field name="model">pos.report.wizard</field>
             <field name="arch" type="xml">
-                <form string="Inventory Movement">
+                <form string="Daily Close Report">
                
                  <group>
                     <group>
@@ -79,7 +79,7 @@
         </record>
 
         <record id="action_view_pos_report" model="ir.actions.act_window">
-            <field name="name">POS Report</field>
+            <field name="name">Daily Close Report</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">pos.report.wizard</field>
             <field name="view_type">form</field>
@@ -89,7 +89,7 @@
         </record>
 
          <record id="action_view_pos_pivot" model="ir.actions.act_window">
-            <field name="name">POS Pivot Report</field>
+            <field name="name">Daily Close Report</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">pos.report.wizard</field>
             <field name="view_type">form</field>
@@ -99,10 +99,10 @@
         </record>
 
 
-        <menuitem id="menu_print_pos_report" name="POS Report PDF/XLS" action="action_view_pos_report"
+        <menuitem id="menu_print_pos_report" name="Daily Close Report PDF/XLS" action="action_view_pos_report"
                   parent="point_of_sale.menu_point_rep"/>
         
-        <menuitem id="menu_print_pos_report_pivot" name="POS Report Pivot" action="action_view_pos_pivot"
+        <menuitem id="menu_print_pos_report_pivot" name="Daily Close Report Pivot" action="action_view_pos_pivot"
                   parent="point_of_sale.menu_point_rep"/>
         
 

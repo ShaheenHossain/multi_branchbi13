@@ -67,7 +67,7 @@ class pos_pdf_report(models.AbstractModel):
 
 
     def _get_lines(self,data):
-
+      res_config= self.env['res.config.settings'].search([],order="id desc", limit=1)
       vals = []
       domain = [('order_id.state','in',['done','paid'])]
       if data['start_date'] :
@@ -90,7 +90,7 @@ class pos_pdf_report(models.AbstractModel):
                       'price': line.price_unit,
                       'discount' : line.discount,
                       'net_sales' : line.price_subtotal,
-                      'vat' : line.price_subtotal_incl - line.price_subtotal,
+                      'vat' : line.tax_ids_after_fiscal_position.amount,
                       'total' : line.price_subtotal_incl
                       })
 
