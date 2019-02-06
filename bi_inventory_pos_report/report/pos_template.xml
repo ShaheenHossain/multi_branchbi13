@@ -9,15 +9,23 @@
             <div class="page">
 
 
+                <br/>
+                <br/>
+                <br/>
+
                 
                 <div class ="text-center">
-                    <h2></h2>
+                    <h2>Daily Close Report</h2>
                 </div>
                 
                         
 
                         <br/>
                 <br/>
+                <div class ="text-left">
+                    <h2><span t-esc="data['warehouse_id'].name"/></h2>
+                </div>
+                
                 <table class="table table-condensed">
                             <tr>
                             
@@ -50,7 +58,7 @@
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Price</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Discount %</th>
                             <th style="border: 3px solid black;background-color:silver;" class="text-center">Net Sales Amount</th>
-		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">VAT</th>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">VAT %</th>
                             <th style="border: 3px solid black;background-color:silver;" class="text-center">Total</th>
                             
                             </tr>

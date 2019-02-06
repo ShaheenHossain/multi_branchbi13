@@ -59,7 +59,7 @@ class pos_pdf_report(models.AbstractModel):
                       'gross_price': line.price_unit * line.qty,
                       'discount' : line.discount,
                       'net_sales' : line.price_subtotal,
-                      'vat' : line.price_subtotal_incl - line.price_subtotal,
+                      'vat' : line.tax_ids_after_fiscal_position.amount,
                       'total' : line.price_subtotal_incl
                       })
 

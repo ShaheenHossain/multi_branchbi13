@@ -11,13 +11,16 @@
 
                 
                 <div class ="text-center">
-                    <h2></h2>
+                    <h2>Fast Moving Item Sales </h2>
                 </div>
                 
                         
 
                         <br/>
                 <br/>
+                <div class ="text-left">
+                    <h2><span t-esc="data['warehouse_id'].name"/></h2>
+                </div>
                 <table class="table table-condensed">
                             <tr>
                             
@@ -49,7 +52,7 @@
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Sales Qty</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Gross Sale Amount</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Discount % </th>
-                            <th style="border: 3px solid black;background-color:silver;" class="text-center">VAT</th>
+                            <th style="border: 3px solid black;background-color:silver;" class="text-center">VAT %</th>
                             <th style="border: 3px solid black;background-color:silver;" class="text-center">Net Sales Amount</th>
 		                    
                            <t t-set="total_sl" t-value="0"/>

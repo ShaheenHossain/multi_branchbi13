@@ -75,7 +75,7 @@ class pos_fast_moving_wizard(models.TransientModel):
                       'gross_price': line.price_unit * line.qty,
                       'discount' : line.discount,
                       'net_sales' : line.price_subtotal,
-                      'vat' : line.price_subtotal_incl - line.price_subtotal
+                      'vat' :line.tax_ids_after_fiscal_position.amount
                       
                       })
 
@@ -108,7 +108,7 @@ class pos_fast_moving_wizard(models.TransientModel):
                       'gross_price': line.price_unit * line.qty,
                       'discount' : line.discount,
                       'net_sales' : line.price_subtotal,
-                      'vat' : line.price_subtotal_incl - line.price_subtotal,
+                      'vat' : line.tax_ids_after_fiscal_position.amount,
                       'total' : line.price_subtotal_incl
                       })
 
@@ -148,9 +148,10 @@ class pos_fast_moving_wizard(models.TransientModel):
         style_table_header = xlwt.easyxf("font:height 200; font: name Liberation Sans, bold on,color black; align: horiz center")
         style = xlwt.easyxf("font:height 200; font: name Liberation Sans,color black;")
         worksheet = workbook.add_sheet('Sheet 1')
-        title = ""
-        worksheet.write(0, 1,'Start Date:')
-        worksheet.write(0, 2,str(self.start_date))
+        title = "Fast Moving Item Sales"
+        worksheet.write(0, 2,'Start Date:')
+        worksheet.write(0, 3,str(self.start_date))
+        worksheet.write(0, 1,self.warehouse_id.name)
         worksheet.write(0, 6,'End Date:')
         worksheet.write(0, 7,str(self.end_date))
         
@@ -223,7 +224,7 @@ class pos_xls_fast_report(models.TransientModel):
     _name = "pos.fast.moving.excel"
     
     
-    excel_file = fields.Binary('Excel Report Inventory')
+    excel_file = fields.Binary('Excel Report Fast Moving Item Sales')
     file_name = fields.Char('Excel File', size=64)
 
 
