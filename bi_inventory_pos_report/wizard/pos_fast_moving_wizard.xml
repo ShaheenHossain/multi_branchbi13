@@ -23,7 +23,7 @@
             <field name="name">POS Report</field>
             <field name="model">pos.fast.moving.wizard</field>
             <field name="arch" type="xml">
-                <form string="POS Report">
+                <form string="Fast Moving Item Sales">
                
                  <group>
                  	<group>
@@ -53,7 +53,7 @@
             <field name="name">Pos Pivot</field>
             <field name="model">pos.fast.moving.wizard</field>
             <field name="arch" type="xml">
-                <form string="Inventory Movement">
+                <form string="Fast Moving Item Sales">
                
                  <group>
                     <group>
@@ -79,7 +79,7 @@
         </record>
 
         <record id="action_view_pos_fast_moving" model="ir.actions.act_window">
-            <field name="name">POS Report</field>
+            <field name="name">Fast Moving Item Sales</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">pos.fast.moving.wizard</field>
             <field name="view_type">form</field>
@@ -89,7 +89,7 @@
         </record>
 
          <record id="action_view_pos_fast_moving_pivot" model="ir.actions.act_window">
-            <field name="name">POS Pivot Report</field>
+            <field name="name">Fast Moving Item Sales</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">pos.fast.moving.wizard</field>
             <field name="view_type">form</field>
