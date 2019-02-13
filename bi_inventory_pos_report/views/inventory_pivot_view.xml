@@ -13,6 +13,11 @@
                 
                  <field name="description" type="measure"/>
                  <field name="quantity" type="measure"/>
+
+                 <field name="unit" type="measure"/>
+                 <field name="cost" type="measure"/>
+                 <field name="total_cost" type="measure"/>
+                 
                   
 
              </pivot>
@@ -26,6 +31,7 @@
              <pivot string="Inventory Movement" disable_linking="True">
                  <field name="product_id" type="measure"/>
                  <field name="description" type="row"/>
+                 <field name="uom" type="measure"/>
                  <field name="opening" type="measure"/>
                  <field name="recieved" type="measure"/>
                  <field name="sale_qty" type="measure"/>
@@ -71,6 +77,8 @@
                  <field name="product_id" type="row"/>
                 
                  <field name="sale_qty" type="measure"/>
+                 <field name="price" type="measure"/>
+                 
                  <field name="gross_price" type="measure"/>
                  
                  <field name="discount" type="measure"/>

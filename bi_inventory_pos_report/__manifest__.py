@@ -3,7 +3,7 @@
 
 {
     "name" : "Inventory POS Report",
-    "version" : "12.0.0.2",
+    "version" : "12.0.0.1",
     "category" : "",
     'summary': 'Inventory POS Report',
     "description": """

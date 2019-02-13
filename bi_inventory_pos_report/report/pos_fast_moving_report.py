@@ -54,17 +54,19 @@ class pos_pdf_report(models.AbstractModel):
         warehouse = self.env['stock.warehouse'].search([('branch_id','=',line.order_id.branch_id.id)])
         if warehouse.id == data['warehouse_id'].id:
           vals.append({'name' : line.product_id.name,
-                      'code' : line.product_id.default_code,
+                      'code' : line.product_id.name,
                       'sale_qty' : line.qty,
                       'gross_price': line.price_unit * line.qty,
-                      'discount' : line.discount,
+                      'price': line.price_unit,
+                      'discount' : (line.qty*line.discount*line.price_unit)/100,
                       'net_sales' : line.price_subtotal,
-                      'vat' : line.tax_ids_after_fiscal_position.amount,
+                      'vat' : line.price_subtotal_incl - line.price_subtotal,
                       'total' : line.price_subtotal_incl
                       })
 
 
      
-      return vals
+      
+      return sorted(vals, key = lambda i: i['sale_qty'],reverse=True)
 
 
