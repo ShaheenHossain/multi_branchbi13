@@ -11,13 +11,17 @@
 
                 
                 <div class ="text-center">
-                    <h2></h2>
+                    <h2>Inventory Movement</h2>
                 </div>
+                
                 
                         
 
                         <br/>
                 <br/>
+                <div class ="text-left">
+                    <h2><span t-esc="data['warehouse_id'].name"/></h2>
+                </div>
                 <table class="table table-condensed">
                             <tr>
                             
@@ -46,6 +50,8 @@
                             <tr>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Product</th>
                                     <th style="border: 3px solid black;background-color:silver;" class="text-center">Description</th>
+
+                            <th style="border: 3px solid black;background-color:silver;" class="text-center">UOM</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Opening Balance Qty</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Received Qty</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Sales Qty</th>
@@ -61,6 +67,7 @@
                                     <tr t-foreach="get_lines" t-as="line">
                                         	<td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['pro_name']"/></td>
                                         	<td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['description']"/></td>
+                                            <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['uom']"/></td>
                                         	<td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['opening']"/></td>
 
                                             <t t-set="total_open" t-value="total_open + line['opening']"/>
@@ -89,7 +96,7 @@
 
                                     <tr>
                                         <td></td>
-                                        
+                                        <td></td>
                                         <td style="border-bottom: 2px solid black;"><strong>Total = </strong></td>
                                         <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_open"/></strong></td>
                                         <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_rcv"/></strong></td>

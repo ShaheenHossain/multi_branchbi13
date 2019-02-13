@@ -17,7 +17,7 @@ class inventory_pdf_report(models.AbstractModel):
         data = data if data is not None else {}
         docs = self.env['inventory.report.wizard'].browse(docids)
         data  = { 'start_date': docs.start_date, 'end_date': docs.end_date,
-                'warehouse_id':docs.warehouse_id
+                'warehouse_id':docs.warehouse_id,'transfer_in_out':docs.transfer_in_out
                 }
         
         return {
@@ -42,6 +42,9 @@ class inventory_pdf_report(models.AbstractModel):
 
       if data['warehouse_id'] :
         domain.append(('picking_type_id.warehouse_id','=',data['warehouse_id'].id))
+
+      if data['transfer_in_out'] :
+        domain.append(('picking_type_id.code','=',data['transfer_in_out']))
       stock_picking_rec = self.env['stock.picking'].search(domain)
 
       
@@ -57,6 +60,9 @@ class inventory_pdf_report(models.AbstractModel):
                        'product' : line.product_id.name,
                        'description': line.product_id.name,
                        'quantity' : line.product_uom_qty,
+                       'unit' : line.product_uom.name,
+                       'cost' : line.product_id.standard_price,
+                       'total_cost' : line.product_id.standard_price * line.product_uom_qty
 
 
 

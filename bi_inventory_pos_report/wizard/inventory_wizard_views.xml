@@ -23,7 +23,7 @@
             <field name="name">Inventory Reports</field>
             <field name="model">inventory.report.wizard</field>
             <field name="arch" type="xml">
-                <form string="Inventory">
+                <form string="Items Transfer">
                
                  <group>
                  	<group>
@@ -35,7 +35,12 @@
 
                  </group>
                  <group>
+                    <group>
                  	<field name='warehouse_id'/>
+                    </group>
+                    <group>
+                        <field name="transfer_in_out"/>
+                    </group>
                  </group>
             
                     <footer>
@@ -53,7 +58,7 @@
             <field name="name">Inventory Reports</field>
             <field name="model">inventory.report.wizard</field>
             <field name="arch" type="xml">
-                <form string="Inventory">
+                <form string="Items Transfer">
                
                  <group>
                     <group>
@@ -65,7 +70,12 @@
 
                  </group>
                  <group>
+                   <group>
                     <field name='warehouse_id'/>
+                    </group>
+                    <group>
+                        <field name="transfer_in_out"/>
+                    </group>
                  </group>
             
                     <footer>
@@ -79,7 +89,7 @@
         </record>
 
         <record id="action_view_inventory_report" model="ir.actions.act_window">
-            <field name="name">Inventory Report</field>
+            <field name="name">Items Transfer</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">inventory.report.wizard</field>
             <field name="view_type">form</field>
@@ -89,7 +99,7 @@
         </record>
 
          <record id="action_view_inventory_pivot_report" model="ir.actions.act_window">
-            <field name="name">Inventory Report</field>
+            <field name="name">Items Transfer</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">inventory.report.wizard</field>
             <field name="view_type">form</field>
@@ -99,10 +109,10 @@
         </record>
 
 
-        <menuitem id="menu_print_inventory_report" name="Inventory Report PDF/XLS" action="action_view_inventory_report"
+        <menuitem id="menu_print_inventory_report" name="Items Transfer PDF/XLS" action="action_view_inventory_report"
                   parent="stock.menu_warehouse_report"/>
         
-        <menuitem id="menu_print_inventory_report_pivot" name="Inventory Report Pivot" action="action_view_inventory_pivot_report"
+        <menuitem id="menu_print_inventory_report_pivot" name="Items Transfer Pivot" action="action_view_inventory_pivot_report"
                   parent="stock.menu_warehouse_report"/>
         
 

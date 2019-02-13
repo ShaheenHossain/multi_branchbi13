@@ -48,14 +48,16 @@
                         <table class="table table-condensed">
                             <tr>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Product</th>
-                                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Code</th>
+                                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Product Description</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Sales Qty</th>
+                            <th style="border: 3px solid black;background-color:silver;" class="text-center">Price</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Gross Sale Amount</th>
-		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Discount % </th>
-                            <th style="border: 3px solid black;background-color:silver;" class="text-center">VAT %</th>
+		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Discount</th>
+                            <th style="border: 3px solid black;background-color:silver;" class="text-center">VAT</th>
                             <th style="border: 3px solid black;background-color:silver;" class="text-center">Net Sales Amount</th>
 		                    
                            <t t-set="total_sl" t-value="0"/>
+                           <t t-set="total_p" t-value="0"/>
                             <t t-set="total_prs" t-value="0"/>
                             <t t-set="total_dsc" t-value="0"/>
                             <t t-set="total_vat" t-value="0"/>
@@ -70,6 +72,10 @@
                                         	<td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['sale_qty']"/></td>
 
                                             <t t-set="total_sl" t-value="total_sl + line['sale_qty']"/>
+
+                                            <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['price']"/></td>
+
+                                            <t t-set="total_p" t-value="total_p + line['price']"/>
 
                                             <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['gross_price']"/></td>
 
@@ -99,6 +105,7 @@
                                         
                                         <td style="border-bottom: 2px solid black;"><strong>Total = </strong></td>
                                         <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_sl"/></strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_p"/></strong></td>
                                         <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_prs"/></strong></td>
                                         <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_dsc"/></strong></td>
                                         

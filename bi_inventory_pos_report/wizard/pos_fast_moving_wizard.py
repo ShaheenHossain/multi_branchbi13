@@ -73,9 +73,10 @@ class pos_fast_moving_wizard(models.TransientModel):
                       'code' : line.product_id.default_code,
                       'sale_qty' : line.qty,
                       'gross_price': line.price_unit * line.qty,
-                      'discount' : line.discount,
+                      'price': line.price_unit,
+                      'discount' : (line.qty*line.discount*line.price_unit)/100,
                       'net_sales' : line.price_subtotal,
-                      'vat' :line.tax_ids_after_fiscal_position.amount
+                      'vat' :line.price_subtotal_incl - line.price_subtotal
                       
                       })
 
@@ -106,15 +107,16 @@ class pos_fast_moving_wizard(models.TransientModel):
                       'code' : line.product_id.default_code,
                       'sale_qty' : line.qty,
                       'gross_price': line.price_unit * line.qty,
-                      'discount' : line.discount,
+                      'price': line.price_unit,
+                      'discount' : (line.qty*line.discount*line.price_unit)/100,
                       'net_sales' : line.price_subtotal,
-                      'vat' : line.tax_ids_after_fiscal_position.amount,
+                      'vat' : line.price_subtotal_incl - line.price_subtotal,
                       'total' : line.price_subtotal_incl
                       })
 
 
      
-      return vals
+      return sorted(vals, key = lambda i: i['sale_qty'],reverse=True)
 
 
 
@@ -149,21 +151,22 @@ class pos_fast_moving_wizard(models.TransientModel):
         style = xlwt.easyxf("font:height 200; font: name Liberation Sans,color black;")
         worksheet = workbook.add_sheet('Sheet 1')
         title = "Fast Moving Item Sales"
-        worksheet.write(0, 2,'Start Date:')
-        worksheet.write(0, 3,str(self.start_date))
+        worksheet.write(0, 3,'Start Date:')
+        worksheet.write(0, 4,str(self.start_date))
         worksheet.write(0, 1,self.warehouse_id.name)
-        worksheet.write(0, 6,'End Date:')
-        worksheet.write(0, 7,str(self.end_date))
+        worksheet.write(0, 7,'End Date:')
+        worksheet.write(0, 8,str(self.end_date))
         
-        worksheet.write_merge(1, 1, 1, 7, title, style=style_title)
+        worksheet.write_merge(1, 1, 1, 8, title, style=style_title)
         
         worksheet.write(2, 1, 'Product', style_title)
         worksheet.write(2, 2, 'Code', style_title)
         worksheet.write(2, 3, 'Sales Qty', style_title)
-        worksheet.write(2, 4, 'Gross Sale Amount', style_title)
-        worksheet.write(2, 5, 'Discount %', style_title)
-        worksheet.write(2, 6, 'VAT', style_title)
-        worksheet.write(2, 7, 'Net Sales Amount', style_title)
+        worksheet.write(2, 4, 'Price', style_title)
+        worksheet.write(2, 5, 'Gross Sale Amount', style_title)
+        worksheet.write(2, 6, 'Discount', style_title)
+        worksheet.write(2, 7, 'VAT', style_title)
+        worksheet.write(2, 8, 'Net Sales Amount', style_title)
         
         data  = { 'start_date': self.start_date, 'end_date': self.end_date,
                 'warehouse_id':self.warehouse_id
@@ -173,6 +176,7 @@ class pos_fast_moving_wizard(models.TransientModel):
         row = 3
         clos = 0
         total_sl = 0
+        total_p = 0
         total_gp = 0
         total_ds = 0
         total_vt = 0
@@ -181,12 +185,14 @@ class pos_fast_moving_wizard(models.TransientModel):
             worksheet.write(row, 1,line['name'])
             worksheet.write(row, 2,line['code'])
             worksheet.write(row, 3,line['sale_qty'])
-            worksheet.write(row, 4,line['gross_price'])
-            worksheet.write(row, 5,line['discount'])
-            worksheet.write(row, 6,line['vat'])
-            worksheet.write(row, 7,line['net_sales'])
+            worksheet.write(row, 4,line['price'])
+            worksheet.write(row, 5,line['gross_price'])
+            worksheet.write(row, 6,line['discount'])
+            worksheet.write(row, 7,line['vat'])
+            worksheet.write(row, 8,line['net_sales'])
 
             total_sl = total_sl + line['sale_qty']
+            total_p = total_p + line['price']
             total_gp = total_gp + line['gross_price']
             total_ds = total_ds + line['discount']
             total_vt = total_vt + line['vat']
@@ -198,10 +204,11 @@ class pos_fast_moving_wizard(models.TransientModel):
 
         worksheet.write(row, 2,"Total = ")
         worksheet.write(row, 3,total_sl)
-        worksheet.write(row, 4,total_gp)
-        worksheet.write(row, 5,total_ds)
-        worksheet.write(row, 6,total_vt)
-        worksheet.write(row, 7,total_ns)
+        worksheet.write(row, 4,total_p)
+        worksheet.write(row, 5,total_gp)
+        worksheet.write(row, 6,total_ds)
+        worksheet.write(row, 7,total_vt)
+        worksheet.write(row, 8,total_ns)
     
 
         

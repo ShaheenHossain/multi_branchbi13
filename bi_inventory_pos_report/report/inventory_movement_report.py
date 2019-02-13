@@ -50,7 +50,7 @@ class inventory_pdf_movement_report(models.AbstractModel):
 
       
 
-      print ("aaaaaaaaaaaaaaaaaaaaa",move_line_rec)
+      
 
       for pro in move_line_rec :
         if pro.product_id.id not in product_list :
@@ -58,22 +58,56 @@ class inventory_pdf_movement_report(models.AbstractModel):
 
 
 
+      domain_2 = [('state','=','done')]
+      if data['start_date'] :
+        domain_2.append(('inventory_id.date','>=',data['start_date']))
+      if data['end_date'] :
+
+        domain_2.append(('inventory_id.date','<=',data['end_date']))
+
+      if data['warehouse_id'] :
+        domain_2.append(('inventory_id.branch_id','=',data['warehouse_id'].branch_id.id))
+
+      
+
+      new_move_line_rec = self.env['stock.move'].search(domain_2)
+
+
+      for pro_id in new_move_line_rec :
+
+        if pro_id.product_id.id not in product_list :
+          product_list.append(pro_id.product_id.id)
+
+
+
       for pro_id in product_list :
         pro_obj = self.env['product.product'].browse(pro_id)
         name = pro_obj.name
-        
+        uom = pro_obj.uom_id.name
+        #print ("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",type(data['start_date']),'llllllllllllllllllllllllll',self.env.context)
+        #pro_obj._context = dict(self.env.context, to_date=data['start_date'])
+        opening = pro_obj._compute_quantities_dict(False,False,False, data['start_date'],data['start_date'])
+        print ("qty=ooooooooooooo======================================",opening[pro_obj.id]['qty_available'],'name=========================',pro_obj.name)
+        opening_qty = opening[pro_obj.id]['qty_available']
+
+
+
+        bal = pro_obj._compute_quantities_dict(pro_obj._context.get('lot_id'), pro_obj._context.get('owner_id'), pro_obj._context.get('package_id'), data['end_date'])
+        print ("qty===bbbbbbbbbbbbbbbbbbbb====================================",opening[pro_obj.id]['qty_available'])
+        bal_qty = bal[pro_obj.id]['qty_available']
+
         move_line_opening = self.env['stock.move'].search([
                                                             
                                                             ('product_id','=',pro_id),
                                                             ('warehouse_id','=',data['warehouse_id'].id)
 
                                                             ])
-
+        
         incoming = 0
         outgoing = 0
         for line in move_line_opening :
           date_1 = line.date_expected.date()
-          print ("11111111111111111111111",date_1,'222222222222222222222222222',data['start_date'])
+          
           if date_1 == data['start_date'] :
             if line.picking_id.picking_type_id.code == 'outgoing':
               outgoing = outgoing + line.product_uom_qty
@@ -82,7 +116,6 @@ class inventory_pdf_movement_report(models.AbstractModel):
               incoming = incoming + line.product_uom_qty
 
 
-        opening_qty = incoming - outgoing
 
 
 
@@ -100,7 +133,7 @@ class inventory_pdf_movement_report(models.AbstractModel):
         inventory_adj_line = self.env['stock.inventory.line'].search([
                                                   ('inventory_id.date','>=',data['start_date']),
                                                   ('inventory_id.date','<=',data['end_date']),
-                                                  #('inventory_id.branch_id','=',data['branch_id'].id),
+                                                  ('inventory_id.branch_id','=',data['warehouse_id'].branch_id.id),
                                                   ('product_id','=',pro_id),
                                                   ('inventory_id.state','=','done')
           ])
@@ -110,19 +143,19 @@ class inventory_pdf_movement_report(models.AbstractModel):
         for line in inventory_adj_line :
           warehouse = self.env['stock.warehouse'].search([('branch_id','=',line.inventory_id.branch_id.id)])
           if warehouse.id == data['warehouse_id'].id :
-            print ("sssssssssssssssssssssssssssssssssssss",line.inventory_id.name)
+            
             product_list.append(line.id)
 
           
 
-        print ("llllllllllllllllllllllllllllllllllllllllllllll",product_list)
+        
         max_id = 0
         for i in product_list :
           if i > max_id :
             max_id = i
 
         if max_id > 0 :
-          print ("name======================================",self.env['stock.inventory.line'].browse(max_id).inventory_id.name)
+          
           adjestment = self.env['stock.inventory.line'].browse(max_id).product_qty
 
         
@@ -137,7 +170,34 @@ class inventory_pdf_movement_report(models.AbstractModel):
             sale_qty = sale_qty + line.product_uom_qty
 
           if line.picking_id.picking_type_id.code == 'incoming':
-            recived_qty = sale_qty + line.product_uom_qty
+            recived_qty = recived_qty + line.product_uom_qty
+
+
+
+
+          
+          if line.location_id.usage == 'inventory'  :
+            
+            recived_qty = recived_qty + line.product_uom_qty
+
+
+        
+        new_move_lines = self.env['stock.move'].search([
+                                                  ('inventory_id.date','>=',data['start_date']),
+                                                  ('inventory_id.date','<=',data['end_date']),
+                                                  ('inventory_id.branch_id','=',data['warehouse_id'].branch_id.id),
+                                                  ('product_id','=',pro_id),
+                                                  ('inventory_id.state','=','done')
+          ])
+        
+        
+        for line in new_move_lines :
+          #print ("ddddddddddddddddddddddddddddda",line.location_id.usage,'=========================',line.location_dest_id.usage)
+          if line.location_id.usage == 'inventory'  and line.location_dest_id.usage == 'internal':
+            #print ("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk")
+            recived_qty = recived_qty + line.product_uom_qty
+
+
 
 
         vals.append({'pro_name':name,
@@ -146,13 +206,16 @@ class inventory_pdf_movement_report(models.AbstractModel):
                     'received' : recived_qty,
                     'sale_qty' : sale_qty,
                     'adjestment': adjestment,
-                    'balance' : opening_qty + recived_qty - sale_qty + adjestment
-
-
-
-
+                    'balance' : bal_qty,
+                    'id' : pro_id,
+                    'uom' : uom,
 
                     })
+      
+            
+
+
+
 
       return vals
 

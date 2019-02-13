@@ -11,13 +11,25 @@
 
                 
                 <div class ="text-center">
-                    <h2></h2>
+                    <h2>Items Transfer</h2>
                 </div>
                 
                         
 
                         <br/>
                 <br/>
+                <div class ="text-left">
+                    <h2><span t-esc="data['warehouse_id'].name"/></h2>
+                </div>
+
+                <div class ="text-left">
+                    <t t-if="data['transfer_in_out'] == 'incoming'">
+                    <h3>Incoming Transfer</h3>
+                    </t>
+                    <t t-if="data['transfer_in_out'] == 'outgoing'">
+                    <h3>Outgoing Transfer</h3>
+                    </t>
+                </div>
                 <table class="table table-condensed">
                             <tr>
                             
@@ -51,6 +63,9 @@
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Product</th>
                             <th style="border: 3px solid black;background-color:silver;" class="text-center">Description</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Qty</th>
+                            <th style="border: 3px solid black;background-color:silver;" class="text-center">Unit</th>
+                            <th style="border: 3px solid black;background-color:silver;" class="text-center">Cost unit</th>
+                            <th style="border: 3px solid black;background-color:silver;" class="text-center">Total Cost</th>
                             <t t-set="total" t-value="0"/>
                             </tr>
                                     <tr t-foreach="get_lines" t-as="line">
@@ -62,6 +77,12 @@
                                        <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['description']"/></td>
                                        <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['quantity']"/></td>
                                        <t t-set="total" t-value="total + line['quantity']"/>
+
+
+
+                                       <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['unit']"/></td>
+                                       <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['cost']"/></td>
+                                       <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['total_cost']"/></td>
                                      
                                     </tr>
 

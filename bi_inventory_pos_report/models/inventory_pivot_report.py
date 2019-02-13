@@ -14,6 +14,9 @@ class inventory_move_line_report(models.Model):
     product_id = fields.Many2one('product.product',string="Product")
     description = fields.Char(string="Description")
     quantity = fields.Float(string="Qty")
+    unit = fields.Many2one('uom.uom',string="Unit")
+    cost = fields.Float(string="Cost")
+    total_cost = fields.Float(string="Total Cost")
 
     
 
@@ -28,7 +31,7 @@ class inventory_movement_pivot(models.Model):
     recieved = fields.Float(string="Received Qty")
     sale_qty = fields.Float(string="Sales Qty")
     adjestment = fields.Float(string="Adjesment Qty")
-    
+    uom = fields.Many2one('uom.uom',string="UOM")
     balance = fields.Float(string="Balance")
 
 
@@ -55,6 +58,7 @@ class pos_fast_move_pivot(models.Model):
     product_id = fields.Many2one('product.product',string="Product")
     code = fields.Char(string="Code")
     sale_qty = fields.Float(string="Sales Qty")
+    price = fields.Float(string="Price")
     gross_price = fields.Float(string="Gross Sale Amount")
     
     discount = fields.Float(string="Discount%")
