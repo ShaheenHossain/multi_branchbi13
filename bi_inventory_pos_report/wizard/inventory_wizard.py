@@ -20,6 +20,8 @@ class inventory_report_wizard(models.TransientModel):
     end_date = fields.Date(string="End Date",required = True)
     warehouse_id = fields.Many2one('stock.warehouse',string="Warehouse",required = True)
 
+    transfer_in_out = fields.Selection([('incoming','Incoming'),('outgoing','Outgoing')],string="Transfer Type",default='in',required = True)
+
     def print_pdf(self):
 
         return self.env.ref('bi_inventory_pos_report.inventory_report_pdf').report_action(self)
@@ -42,6 +44,8 @@ class inventory_report_wizard(models.TransientModel):
 
         if self.warehouse_id :
             domain.append(('picking_type_id.warehouse_id','=',self.warehouse_id.id))
+        if self.transfer_in_out:
+            domain.append(('picking_type_id.code','=',self.transfer_in_out))
         stock_picking_rec = self.env['stock.picking'].search(domain)
 
       
@@ -58,6 +62,9 @@ class inventory_report_wizard(models.TransientModel):
                            'product_id' : line.product_id.id,
                            'description': line.product_id.name,
                            'quantity' : line.product_uom_qty,
+                           'unit' : line.product_uom.id,
+                            'cost' : line.product_id.standard_price,
+                            'total_cost' : line.product_id.standard_price * line.product_uom_qty
                 })
                 
 
@@ -92,6 +99,9 @@ class inventory_report_wizard(models.TransientModel):
 
       if self.warehouse_id :
         domain.append(('picking_type_id.warehouse_id','=',self.warehouse_id.id))
+
+      if self.transfer_in_out:
+        domain.append(('picking_type_id.code','=',self.transfer_in_out))
       stock_picking_rec = self.env['stock.picking'].search(domain)
 
       
@@ -105,6 +115,10 @@ class inventory_report_wizard(models.TransientModel):
                        'product' : line.product_id.name,
                        'description': line.product_id.name,
                        'quantity' : line.product_uom_qty,
+                       'unit' : line.product_uom.name,
+                       'cost' : line.product_id.standard_price,
+                       'total_cost' : line.product_id.standard_price * line.product_uom_qty
+
 
 
 
@@ -143,25 +157,38 @@ class inventory_report_wizard(models.TransientModel):
         style_table_header = xlwt.easyxf("font:height 200; font: name Liberation Sans, bold on,color black; align: horiz center")
         style = xlwt.easyxf("font:height 200; font: name Liberation Sans,color black;")
         worksheet = workbook.add_sheet('Sheet 1')
-        title = ""
-        worksheet.write(0, 1,'Start Date:')
-        worksheet.write(0, 2,str(self.start_date))
-        worksheet.write(0, 6,'End Date:')
-        worksheet.write(0, 7,str(self.end_date))
+        title = "Items Transfer"
+        worksheet.write(1, 1,'Start Date:')
+        worksheet.write(1, 2,str(self.start_date))
+        worksheet.write(1, 9,'End Date:')
+        worksheet.write(1, 10,str(self.end_date))
         
-        worksheet.write_merge(1, 1, 1, 7, title, style=style_title)
+        worksheet.write(0, 1,self.warehouse_id.name)
+        if self.transfer_in_out == 'incoming':
+
+            worksheet.write(0, 4,'Incoming Transfer')
+
+        if self.transfer_in_out == 'outgoing':
+
+            worksheet.write(0, 4,'Outgoing Transfer')
+
+
+        worksheet.write_merge(2, 2, 1, 10, title, style=style_title)
         
-        worksheet.write(2, 1, 'Warehouse', style_title)
-        worksheet.write(2, 2, 'Source Document', style_title)
-        worksheet.write(2, 3, 'Transfer No', style_title)
-        worksheet.write(2, 4, 'Date', style_title)
-        worksheet.write(2, 5, 'Product', style_title)
-        worksheet.write(2, 6, 'Description', style_title)
-        worksheet.write(2, 7, 'Qty', style_title)
+        worksheet.write(3, 1, 'Warehouse', style_title)
+        worksheet.write(3, 2, 'Source Document', style_title)
+        worksheet.write(3, 3, 'Transfer No', style_title)
+        worksheet.write(3, 4, 'Date', style_title)
+        worksheet.write(3, 5, 'Product', style_title)
+        worksheet.write(3, 6, 'Description', style_title)
+        worksheet.write(3, 7, 'Qty', style_title)
+        worksheet.write(3, 8, 'Unit', style_title)
+        worksheet.write(3, 9, 'Unit Cost', style_title)
+        worksheet.write(3, 10, 'Total Cost', style_title)
         
         
         lines = self.get_lines()
-        row = 3
+        row = 4
         clos = 0
         total = 0
         for line in lines :
@@ -172,6 +199,9 @@ class inventory_report_wizard(models.TransientModel):
             worksheet.write(row, 5,line['product'])
             worksheet.write(row, 6,line['description'])
             worksheet.write(row, 7,line['quantity'])
+            worksheet.write(row, 8,line['unit'])
+            worksheet.write(row, 9,line['cost'])
+            worksheet.write(row, 10,line['total_cost'])
             total = total + line['quantity']
             
             row = row+1

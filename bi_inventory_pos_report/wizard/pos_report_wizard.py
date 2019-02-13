@@ -69,9 +69,9 @@ class pos_report_wizard(models.TransientModel):
                         'description' : line.product_id.name,
                         'sale_qty' : line.qty,
                         'price': line.price_unit,
-                        'discount' : line.discount,
+                        'discount' : (line.qty*line.discount*line.price_unit)/100,
                         'net_sales' : line.price_subtotal,
-                        'vat' : line.tax_ids_after_fiscal_position.amount,
+                        'vat' : line.price_subtotal_incl - line.price_subtotal,
                         'total' : line.price_subtotal_incl
                         })
 
@@ -146,9 +146,9 @@ class pos_report_wizard(models.TransientModel):
                       'description' : line.product_id.name,
                       'sale_qty' : line.qty,
                       'price': line.price_unit,
-                      'discount' : line.discount,
+                      'discount' : (line.qty*line.discount*line.price_unit)/100,
                       'net_sales' : line.price_subtotal,
-                      'vat' : line.tax_ids_after_fiscal_position.amount,
+                      'vat' : line.price_subtotal_incl - line.price_subtotal,
                       'total' : line.price_subtotal_incl
                       })
 
