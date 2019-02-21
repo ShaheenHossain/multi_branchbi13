@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_bom_user,mrp_bom_user,mrp.model_mrp_bom,branch.group_branch_user,1,1,1,0
+access_mrp_bom_manager,mrp_bom_manager,mrp.model_mrp_bom,branch.group_branch_user_manager,1,1,1,1
+access_mrp_bom_line_user,mrp_bom_line_user,mrp.model_mrp_bom_line,branch.group_branch_user,1,1,1,0
+access_mrp_bom_line_manager,mrp_bom_line_manager,mrp.model_mrp_bom_line,branch.group_branch_user_manager,1,1,1,1
+access_mrp_production_user,mrp_production_user,mrp.model_mrp_production,branch.group_branch_user,1,1,1,0
+access_mrp_production_manager,mrp_production_manager,mrp.model_mrp_production,branch.group_branch_user_manager,1,1,1,1
+access_stock_move_user,mrp_stock_move_user,mrp.model_stock_move,branch.group_branch_user,1,1,1,0
+access_stock_move_manager,mrp_stock_move_manager,mrp.model_stock_move,branch.group_branch_user_manager,1,1,1,1
+access_mrp_workorder_user,mrp_mrp_workorder_user,mrp.model_mrp_workorder,branch.group_branch_user,1,1,1,0
+access_mrp_workorder_manager,mrp_mrp_workorder_manager,mrp.model_mrp_workorder,branch.group_branch_user_manager,1,1,1,1
+access_stock_move_line_user,mrp_stock_move_line_user,mrp.model_stock_move_line,branch.group_branch_user,1,1,1,0
+access_stock_move_line_manager,mrp_stock_move_line_manager,mrp.model_stock_move_line,branch.group_branch_user_manager,1,1,1,1
