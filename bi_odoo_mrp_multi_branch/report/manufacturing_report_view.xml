@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<odoo>
+<data>
+
+<template id="inherit_report_mrporder" inherit_id="mrp.report_mrporder">
+	<xpath expr="//div[@class='row mt32 mb32']" position="after">
+	    <h3>Branch: <span t-esc="o.branch_id.name"/></h3>
+	</xpath>
+</template>
+	   
+</data>
+</odoo>
