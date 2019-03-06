@@ -1,0 +1,4 @@
+[submodule "synconics/saudi_hr"]
+	path = synconics/saudi_hr
+	url = git@github.com:synconics/saudi_hr.git
+	branch = master
