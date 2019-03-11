@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+    
+    
+			<!-- POS Logo Change -->
+			<record id="inherit_view_pos_logo_change_form" model="ir.ui.view">
+				<field name="name">inherit_bi_pos_logo_change</field>
+				<field name="model">pos.config</field>
+				<field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+				<field name="arch" type="xml">
+					<xpath expr="//div[@id='title']" position="before">
+	                    <field name="pos_logo" widget="image" class="oe_avatar" />
+	                    <br/><br/><br/><br/>
+                	</xpath>
+				</field>
+			</record>
+			
+			
+		<!-- Add custom js for POS Logo Change -->	    
+        <template id="assets_for_pos_logo" inherit_id="point_of_sale.assets">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_logo_change/static/src/js/pos_logo_change.js"/>
+            </xpath>
+        </template>
+        
+    </data>
+</openerp>
