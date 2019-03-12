@@ -33,9 +33,9 @@
                 <table class="table table-condensed">
                             <tr>
                             
-                            <th style="border: 0px ;" class="text-left">Start Date : <span t-esc="data['start_date']"/></th>
+                            <th style="border: 0px ;" class="text-left">Start Date : <span t-esc="data['start_date']" /></th>
                             
-                            <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;</th>
+                            <!-- <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;</th>
                              <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                              
@@ -43,8 +43,10 @@
                              <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                              <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                              <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                            <th style="border: 0px ;" class="text-left">End Date : <span t-esc="data['end_date']"/></th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th> -->
+                         </tr>
+                         <tr>
+                            <th style="border: 0px ;" class="text-left">End Date : <span t-esc="data['end_date']" /></th>
                             
                         </tr>
                 </table>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<record id="view_inventory_movement_graph" model="ir.ui.view">
+         <field name="name">inventory.movement.report.graph</field>
+         <field name="model">inventory.movement.report</field>
+         <field name="arch" type="xml">
+             <graph string="Inventory Movement" type="line">
+                 <field name="product_id" type="row" />
+                 <field name="sale_qty" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+
+
+    <record id="view_inventory_item_graph" model="ir.ui.view">
+         <field name="name">inventory.pivot.report.graph</field>
+         <field name="model">inventory.pivot.report</field>
+         <field name="arch" type="xml">
+             <graph string="Inventory Movement" type="line">
+                 <field name="product_id" type="row" />
+                 <field name="quantity" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+
+    <record id="view_pos_daily_graph" model="ir.ui.view">
+         <field name="name">pos.pivot.report.graph</field>
+         <field name="model">pos.pivot.report</field>
+         <field name="arch" type="xml">
+             <graph string="" type="line">
+                 <field name="product_id" type="row" />
+                 <field name="sale_qty" type="measure"/>
+             </graph>
+         </field>
+    </record>
+
+
+    <record id="view_fast_moving_graph" model="ir.ui.view">
+         <field name="name">pos.pivot.fast.moving.graph</field>
+         <field name="model">pos.pivot.fast.moving</field>
+         <field name="arch" type="xml">
+             <graph string="" type="line">
+                 <field name="product_id" type="row" />
+                 <field name="sale_qty" type="measure"/>
+             </graph>
+         </field>
+    </record>
+    
+</odoo>
