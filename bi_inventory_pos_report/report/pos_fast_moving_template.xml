@@ -26,15 +26,15 @@
                             
                             <th style="border: 0px ;" class="text-left">From Date : <span t-esc="data['start_date']"/></th>
                             
-                            <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                            <!-- <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                              <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                              -->
+
+                          </tr>
+                          <tr>
                              
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             
                             <th style="border: 0px ;" class="text-left">To Date : <span t-esc="data['end_date']"/></th>
                             
                         </tr>
@@ -82,12 +82,12 @@
                                             <t t-set="total_prs" t-value="total_prs + line['gross_price']"/>
 
 
-                                         <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['discount']"/></td>
+                                         <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="'%.2f'% line['discount']"/></td>
 
                                          <t t-set="total_dsc" t-value="total_dsc + line['discount']"/>
 
 
-                                       <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['vat']"/></td>
+                                       <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="'%.2f'% line['vat']"/></td>
 
                                        <t t-set="total_vat" t-value="total_vat + line['vat']"/>
 
@@ -104,13 +104,13 @@
                                         <td></td>
                                         
                                         <td style="border-bottom: 2px solid black;"><strong>Total = </strong></td>
-                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_sl"/></strong></td>
-                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_p"/></strong></td>
-                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_prs"/></strong></td>
-                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_dsc"/></strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="'%.2f'% total_sl"/></strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="'%.2f'% total_p"/></strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="'%.2f'% total_prs"/></strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="'%.2f'% total_dsc"/></strong></td>
                                         
-                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_vat"/></strong></td>
-                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="total_nsa"/></strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="'%.2f'% total_vat"/></strong></td>
+                                        <td style="border-bottom: 2px solid black;"><strong><span t-esc="'%.2f'% total_nsa"/></strong></td>
                                         
                                     </tr>
                             

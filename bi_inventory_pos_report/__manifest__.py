@@ -3,7 +3,7 @@
 
 {
     "name" : "Inventory POS Report",
-    "version" : "12.0.0.1",
+    "version" : "12.0.1.1",
     "category" : "",
     'summary': 'Inventory POS Report',
     "description": """
@@ -12,7 +12,7 @@
     "website" : "www.browseinfo.in",
     "price": 000,
     "currency": 'EUR',
-    "depends" : ['base','branch','stock'],
+    "depends" : ['base','branch','mrp','stock'],
     "data": ["security/ir.model.access.csv",
             "wizard/inventory_wizard_views.xml",
             "wizard/inventory_movement_wizard_view.xml",
@@ -24,6 +24,7 @@
             'report/pos_template.xml',
             'report/report_views.xml',
             'views/inventory_pivot_view.xml',
+            'views/graph_views.xml',
         
     ],
     'qweb': [
