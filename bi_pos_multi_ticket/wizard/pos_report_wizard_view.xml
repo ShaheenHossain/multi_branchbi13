@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="view_pos_report_wizard" model="ir.ui.view">
+		<field name="name">closed.session.report.form</field>
+		<field name="model">closed.session.report</field>
+		<field name="arch" type="xml">
+			<form string="Sales Details">
+				<group>
+					<field name="start_date"/>
+					<field name="end_date"/>
+				</group>
+				<group>
+					<field name="pos_config_ids" colspan="4" widget="many2many_tags" />
+					<field name="pos_session_ids" colspan="4" widget="many2many_tags" options="{'no_create': True}"/>
+				</group>
+				<footer>
+					<button name="generate_pos_report" string="Print" type="object" class="btn-primary"/>
+					<button string="Cancel" class="btn-secondary" special="cancel" />
+				</footer>
+			</form>
+		</field>
+		</record>
+
+        <record id="action_report_pos_closed_session" model="ir.actions.act_window">
+			<field name="name">Sales Details</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">closed.session.report</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		 <record id="pos_paper_format" model="report.paperformat">
+            <field name="name">Sales Details</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">200</field>
+            <field name="page_width">95</field>
+            <field name="margin_top">40</field>
+            <field name="margin_bottom">15</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False" />
+            <field name="orientation">Portrait</field>
+            <field name="header_spacing">36</field>
+            <field name="dpi">110</field>
+        </record>
+
+        <report 
+            id="pos_report" 
+            string="Sales Details" 
+            model="closed.session.report" 
+            report_type="qweb-pdf"
+            name="bi_pos_multi_ticket.report_close_session"
+            file="bi_pos_multi_ticket.report_close_session"
+            paperformat="bi_pos_multi_ticket.pos_paper_format"
+            />
+		<menuitem id="menu_pos_report"
+	        name="Posted Sessions Report"
+	        parent="point_of_sale.menu_point_rep"
+	        action="action_report_pos_closed_session"
+	        />
+	</data>
+</odoo>
