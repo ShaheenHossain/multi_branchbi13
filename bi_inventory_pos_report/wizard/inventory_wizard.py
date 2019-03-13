@@ -15,6 +15,7 @@ except ImportError:
 
 class inventory_report_wizard(models.TransientModel):
     _name = "inventory.report.wizard"
+    _description = "Inventory Report Wizard"
 
     start_date = fields.Date(string="Start Date",required = True)
     end_date = fields.Date(string="End Date",required = True)
@@ -264,7 +265,7 @@ class inventory_report_wizard(models.TransientModel):
 
 class inventory_xls_report(models.TransientModel):
     _name = "inventory.report.excel"
-    
+    _description = "Inventory Report Excel"
     
     excel_file = fields.Binary('Excel Report Inventory')
     file_name = fields.Char('Excel File', size=64)
