@@ -2,7 +2,7 @@
 
 {
     'name': 'Multiple Branch(Unit) Operation Setup for All Applications Odoo/OpenERP',
-    'version': '12.0.0.8',
+    'version': '12.0.2.1',
     'category': 'Sales',
     'author': 'BrowseInfo',
     'summary': 'Multiple Branch/Unit Operation on Sales,Purchases,Accounting/Invoicing,Voucher,Paymemt,POS, Accounting Reports for single company',
@@ -41,7 +41,7 @@ operating Unit for POS,operating Unit for Sales,operating Unit for Purchase,oper
 operating-Unit Operation for POS,operating-Unit Operation for Sales,operating-Unit operation for Purchase,operating-Unit operation for all, operating-Unit operation for Accounting,operating-Unit Operation for invoicing,operating-Unit operation for Payment order,operating-Unit operation for point of sales,operating-Unit operation for voucher,operating-Unit operation for All Accounting reports,operating-Unit operation Accounting filter.
     """,
     'website': 'http://www.browseinfo.in',
-    'depends': ['base','sale','purchase','stock','account','point_of_sale','purchase_stock'],
+    'depends': ['base','sale_management','purchase','stock','account','point_of_sale','purchase_stock'],
     'data': [
                 'security/branch_security.xml',
                 'security/ir.model.access.csv',
