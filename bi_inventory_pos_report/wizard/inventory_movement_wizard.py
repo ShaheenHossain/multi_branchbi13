@@ -859,7 +859,7 @@ class inventory_movemrnt_wizard(models.TransientModel):
 
 class inventory_movement_xls_report(models.TransientModel):
     _name = "inventory.movement.excel"
-    _description "Inventory Movemove Excel"
+    _description = "Inventory Movement Excel"
     
     excel_file = fields.Binary('Excel Report Inventory')
     file_name = fields.Char('Excel File', size=64)
