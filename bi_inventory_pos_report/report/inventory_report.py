@@ -5,13 +5,10 @@
 from odoo import models, api
 
 
-
-
-
-
 class inventory_pdf_report(models.AbstractModel):
     _name = 'report.bi_inventory_pos_report.inventory_pdf_template'
-    
+    _description = "Report inventory"
+
     @api.multi
     def _get_report_values(self, docids, data=None):
         data = data if data is not None else {}

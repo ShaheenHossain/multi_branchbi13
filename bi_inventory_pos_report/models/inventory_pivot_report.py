@@ -6,6 +6,7 @@ from odoo import api, fields, models
 
 class inventory_move_line_report(models.Model):
     _name = "inventory.pivot.report"
+    _description = "Inventory pivot report"
 
     warehouse_id = fields.Many2one('stock.warehouse',string="Warehouse")
     source_doc = fields.Char(string="Source Document")
@@ -23,7 +24,7 @@ class inventory_move_line_report(models.Model):
 
 class inventory_movement_pivot(models.Model):
     _name = "inventory.movement.report"
-
+    _description = "Inventory movement report"
 
     product_id = fields.Many2one('product.product',string="Product")
     description = fields.Char(string="Description")
@@ -38,7 +39,7 @@ class inventory_movement_pivot(models.Model):
 
 class pos_line_pivot(models.Model):
     _name = "pos.pivot.report"
-
+    _description = "POS pivot report"
 
     product_id = fields.Many2one('product.product',string="Product")
     description = fields.Char(string="Description")
@@ -53,7 +54,7 @@ class pos_line_pivot(models.Model):
 
 class pos_fast_move_pivot(models.Model):
     _name = "pos.pivot.fast.moving"
-
+    _description = "POS pivot Fast moving"
 
     product_id = fields.Many2one('product.product',string="Product")
     code = fields.Char(string="Code")
@@ -64,10 +65,4 @@ class pos_fast_move_pivot(models.Model):
     discount = fields.Float(string="Discount%")
     vat = fields.Float(string="VAT")
     net_sales = fields.Float(string="Net Sales Amount")
-    
 
-
-
-    
-
-    

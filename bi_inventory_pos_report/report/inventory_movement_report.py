@@ -8,12 +8,9 @@ from odoo.tools.float_utils import float_round
 from datetime import date
 
 
-
-
-
-
 class inventory_pdf_movement_report(models.AbstractModel):
     _name = 'report.bi_inventory_pos_report.inventory_movement_pdf_template'
+    _description = "report movement"
     
     @api.multi
     def _get_report_values(self, docids, data=None):
@@ -28,12 +25,8 @@ class inventory_pdf_movement_report(models.AbstractModel):
         return {
                    'doc_model': 'inventory.movement.wizard',
                    'data' : data1,
-
-                   
                    'get_lines':self._get_lines(data),
-                   
-                   
-                   }
+                }
 
 
     def _compute_quantities_product_quant_dic(self,from_date,to_date,product_obj,data):

@@ -11,7 +11,8 @@ from odoo import models, api
 
 class pos_pdf_report(models.AbstractModel):
     _name = 'report.bi_inventory_pos_report.pos_fast_moving_pdf_template'
-    
+    _description = "Report Fast moving"
+
     @api.multi
     def _get_report_values(self, docids, data=None):
         data = data if data is not None else {}

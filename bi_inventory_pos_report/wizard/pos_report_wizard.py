@@ -15,6 +15,7 @@ except ImportError:
 
 class pos_report_wizard(models.TransientModel):
     _name = "pos.report.wizard"
+    _description = "POS Report wizard"
 
     start_date = fields.Date(string="Start Date",required = True)
     end_date = fields.Date(string="End Date",required = True)
@@ -274,7 +275,7 @@ class pos_report_wizard(models.TransientModel):
 
 class pos_xls_report(models.TransientModel):
     _name = "pos.report.excel"
-    
+    _description = "POS Report Excel"
     
     excel_file = fields.Binary('Excel Daily Close Report')
     file_name = fields.Char('Excel File', size=64)

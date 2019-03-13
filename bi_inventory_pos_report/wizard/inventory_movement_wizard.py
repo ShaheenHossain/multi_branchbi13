@@ -17,6 +17,7 @@ except ImportError:
 
 class inventory_movemrnt_wizard(models.TransientModel):
     _name = "inventory.movement.wizard"
+    _description = "Inventory Movement"
 
     start_date = fields.Date(string="Start Date",required = True)
     end_date = fields.Date(string="End Date",required = True)
@@ -858,7 +859,7 @@ class inventory_movemrnt_wizard(models.TransientModel):
 
 class inventory_movement_xls_report(models.TransientModel):
     _name = "inventory.movement.excel"
-    
+    _description "Inventory Movemove Excel"
     
     excel_file = fields.Binary('Excel Report Inventory')
     file_name = fields.Char('Excel File', size=64)

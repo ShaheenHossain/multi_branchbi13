@@ -15,6 +15,7 @@ except ImportError:
 
 class pos_fast_moving_wizard(models.TransientModel):
     _name = "pos.fast.moving.wizard"
+    _description = "POS Fast Moving"
 
     start_date = fields.Date(string="Start Date",required = True)
     end_date = fields.Date(string="End Date",required = True)
@@ -229,7 +230,7 @@ class pos_fast_moving_wizard(models.TransientModel):
 
 class pos_xls_fast_report(models.TransientModel):
     _name = "pos.fast.moving.excel"
-    
+    _description = "POS fast moving Excel"
     
     excel_file = fields.Binary('Excel Report Fast Moving Item Sales')
     file_name = fields.Char('Excel File', size=64)

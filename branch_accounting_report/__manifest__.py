@@ -5,7 +5,7 @@
     "name" : "Financial Reports For Branch -Enterprise Edition Odoo",
     "version" : "12.0.0.1",
     "category" : "Accounting",
-    "depends" : ['account', 'account_accountant', 'account_reports','branch'],
+    "depends" : ['account', 'account_accountant', 'account_reports', 'branch'],
     "author": "BrowseInfo",
     'summary': 'This app helps to provide branch wise filter on all Financial statement for Enterprise edition',
     "description": """
