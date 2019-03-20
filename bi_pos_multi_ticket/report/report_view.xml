@@ -29,15 +29,15 @@
 					<th style="text-align:right;">Total Amount</th>
 				</tr></thead>
 				<tbody>
-					<t t-foreach='products' t-as='line'>
+					<t t-foreach='products_data' t-as='line'>
 						<tr>
 							<td><t t-esc="line['product_name']" /></td>
 							<td>
-								<t t-esc="'%.2f'% line['qty']" />
+								<t t-esc="line['qty']" />
 							</td>
 							<td style="text-align:right;">
-								<t t-esc="'%.2f'% (line['price_subtotal'])" />
-							</td>
+								<t t-esc="line['price_subtotal']" t-options="{'widget': 'float', 'precision': currency_precision}" />
+							</td> 
 							
 						</tr>
 					</t>                  
