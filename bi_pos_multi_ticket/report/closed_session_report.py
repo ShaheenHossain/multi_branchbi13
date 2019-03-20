@@ -76,6 +76,9 @@ class ClosedSessionReport(models.AbstractModel):
 		products_sold = {}
 		total_tax = 0.0
 		taxes = {}
+		mypro = {}
+		# products = []
+
 		for order in orders:
 			if user_currency != order.pricelist_id.currency_id:
 				total += order.pricelist_id.currency_id._convert(
@@ -85,11 +88,28 @@ class ClosedSessionReport(models.AbstractModel):
 			currency = order.session_id.currency_id
 
 			total_tax = total_tax + order.amount_tax
-
 			for line in order.lines:
-				key = (line.product_id, line.price_subtotal, line.discount)
-				products_sold.setdefault(key, 0.0)
-				products_sold[key] += line.qty
+				product = str(line.product_id.id)
+				if product in mypro:
+					old_qty = mypro[product]['qty']
+					old_subtotal = mypro[product]['price_subtotal']
+					mypro[product].update({
+					'product_id' :line.product_id.id,
+					'product_name' : line.product_id.name,
+					'qty' : old_qty + line.qty,
+					'product' : line.product_id,
+					'price_subtotal' : old_subtotal+line.price_subtotal,
+					})
+				else:
+					mypro.update({ product : {
+						'product_id' :line.product_id.id,
+						'product_name' : line.product_id.name,
+						'qty' : line.qty,
+						'product' : line.product_id,
+						'price_subtotal' : line.price_subtotal,
+					}})
+
+			products = list(mypro.values())
 		st_line_ids = self.env["account.bank.statement.line"].search([('pos_statement_id', 'in', orders.ids)]).ids
 		if st_line_ids:
 			self.env.cr.execute("""
@@ -123,15 +143,7 @@ class ClosedSessionReport(models.AbstractModel):
 			'taxes': float(total_tax),
 			'configs_name' : configss,
 			'sessions_name': sessions_name,
-			'products': sorted([{
-				'product_id': product.id,
-				'product_name': product.name,
-				'code': product.default_code,
-				'quantity': qty,
-				'price_unit': price_unit,
-				'discount': discount,
-				'uom': product.uom_id.name,
-			} for (product, price_unit, discount), qty in products_sold.items()], key=lambda l: l['product_name'])
+			'products': products,
 		}
 
 	@api.multi

@@ -31,16 +31,12 @@
 				<tbody>
 					<t t-foreach='products' t-as='line'>
 						<tr>
-							<t t-set="internal_reference" t-value="line['code'] and '[%s] ' % line['code'] or ''" />
-							<td><t t-esc="internal_reference" /><t t-esc="line['product_name']" /></td>
+							<td><t t-esc="line['product_name']" /></td>
 							<td>
-								<t t-esc="'%.2f'% line['quantity']" />
-								<t t-if='line["uom"] != "Unit(s)"'>
-									<t t-esc='line["uom"]' /> 
-								</t>
+								<t t-esc="'%.2f'% line['qty']" />
 							</td>
 							<td style="text-align:right;">
-								<t t-esc="'%.2f'% (line['price_unit']*line['quantity'])" />
+								<t t-esc="'%.2f'% (line['price_subtotal'])" />
 							</td>
 							
 						</tr>

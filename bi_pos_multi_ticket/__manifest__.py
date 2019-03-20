@@ -3,7 +3,7 @@
 
 {
     "name" : "POS multi ticket and report",
-    "version" : "12.0.0.2",
+    "version" : "12.0.0.3",
     "category" : "",
     'summary': 'Brief description of the module',
     "description": """
