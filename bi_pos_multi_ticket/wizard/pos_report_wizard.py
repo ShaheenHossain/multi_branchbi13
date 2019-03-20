@@ -9,8 +9,7 @@ from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMA
 
 class ClosedSessionReport(models.TransientModel):
 	_name = 'closed.session.report'
-	_description = "Closed Sessions Report"
-
+	
 	start_date = fields.Datetime(required=True, default=fields.Datetime.now)
 	end_date = fields.Datetime(required=True, default=fields.Datetime.now)
 	company_id = fields.Many2one("res.company",string="Company",default=1)
