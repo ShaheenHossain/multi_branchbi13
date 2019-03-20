@@ -77,7 +77,7 @@ class ClosedSessionReport(models.AbstractModel):
 		total_tax = 0.0
 		taxes = {}
 		mypro = {}
-		# products = []
+		products = []
 
 		for order in orders:
 			if user_currency != order.pricelist_id.currency_id:
@@ -143,7 +143,7 @@ class ClosedSessionReport(models.AbstractModel):
 			'taxes': float(total_tax),
 			'configs_name' : configss,
 			'sessions_name': sessions_name,
-			'products': products,
+			'products_data': products,
 		}
 
 	@api.multi
