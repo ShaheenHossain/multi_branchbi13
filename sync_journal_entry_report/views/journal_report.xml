@@ -72,6 +72,15 @@
                                 </td>
                             </tr>
                         </t>
+                        <t>
+                            <tr>
+                                <td colspan="5" class="text-right">
+                                    <strong>Total</strong>
+                                </td>
+                                <td class="text-left"><strong><t t-esc="'%.2f'% sum(l.debit for l in o.line_ids)"/></strong></td>
+                                <td class="text-left"><strong><t t-esc="'%.2f'% sum(l.credit for l in o.line_ids)"/></strong></td>
+                            </tr>
+                        </t>
                     </tbody>
                 </table>
                 <br/>
