@@ -4,9 +4,8 @@
 
 {
     'name': 'Multiple Branch(Unit) Operations for Manufacturing',
-    'version': '12.0.0.1',
+    'version': '12.0.0.2',
     'category': 'Manufacturing',
-    'author': 'BrowseInfo',
     'summary': 'Multiple Branches/Unit Operation on Manufacturing for single company',
     "description": """
        Multiple Unit operation management for single company, Mutiple Branch management for single company, multiple operation for single company.
@@ -67,7 +66,10 @@
 operating Unit for POS,operating Unit for Sales,operating Unit for Purchase,operating Unit for all,operating Unit for Accounting,operating Unit for invoicing,operating Unit for Payment order,operating Unit for point of sales,operating Unit for voucher,operating Unit for All Accounting reports,operating Unit Accounting filter. Operating unit for picking, operating unit for warehouse, operaing unit for sale stock, operating unit for location
 operating-Unit Operation for POS,operating-Unit Operation for Sales,operating-Unit operation for Purchase,operating-Unit operation for all, operating-Unit operation for Accounting,operating-Unit Operation for invoicing,operating-Unit operation for Payment order,operating-Unit operation for point of sales,operating-Unit operation for voucher,operating-Unit operation for All Accounting reports,operating-Unit operation Accounting filter.
     """,
+    'author': 'BrowseInfo',
     'website': 'http://www.browseinfo.in',
+    "price": 40,
+    "currency": 'EUR',
     'depends': ['base','branch','mrp'],
     'data': [
                 'security/ir.model.access.csv',
@@ -77,12 +79,10 @@ operating-Unit Operation for POS,operating-Unit Operation for Sales,operating-Un
              ],
     'qweb': [],
     'demo': [],
-    "price": 40,
-    "currency": 'EUR',
     'test': [],
     'installable': True,
-    'live_test_url':'https://youtu.be/zXhUMtmgxvI',
     'auto_install': False,
+    'live_test_url':'https://youtu.be/zXhUMtmgxvI',
     "images":['static/description/Banner.png'],
 }
 
