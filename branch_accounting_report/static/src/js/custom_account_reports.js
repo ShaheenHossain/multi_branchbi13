@@ -25,6 +25,7 @@ var _t = core._t;
 
         render_searchview_buttons: function() {
             var self = this;
+            this._super();
             // fold all menu
         // bind searchview buttons/filter to the correct actions
         var $datetimepickers = this.$searchview_buttons.find('.js_account_reports_datetimepicker');
@@ -108,6 +109,8 @@ var _t = core._t;
                 if (''+el.id == ''+option_id){
                     if (el.selected === undefined || el.selected === null){el.selected = false;}
                     el.selected = !el.selected;
+                }else if (option_value === 'ir_filters') {
+                    el.selected = false;
                 }
                 return el;
             });
@@ -168,6 +171,33 @@ var _t = core._t;
                     self.$searchview_buttons.find('.account_branch_filter').click();
                 })
             });
+
+        //     // partner filter
+        // if (this.report_options.partner) {
+        //     if (!this.M2MFilters) {
+        //         var fields = {};
+        //         if ('partner_ids' in this.report_options) {
+        //             fields['partner_ids'] = {
+        //                 label: _t('Partners'),
+        //                 modelName: 'res.partner',
+        //                 value: this.report_options.partner_ids.map(Number),
+        //             };
+        //         }
+        //         if ('partner_categories' in this.report_options) {
+        //             fields['partner_categories'] = {
+        //                 label: _t('Tags'),
+        //                 modelName: 'res.partner.category',
+        //                 value: this.report_options.partner_categories.map(Number),
+        //             };
+        //         }
+        //         if (!_.isEmpty(fields)) {
+        //             this.M2MFilters = new M2MFilters(this, fields);
+        //             this.M2MFilters.appendTo(this.$searchview_buttons.find('.js_account_partner_m2m'));
+        //         }
+        //     } else {
+        //         this.$searchview_buttons.find('.js_account_partner_m2m').append(this.M2MFilters.$el);
+        //     }
+        // }
         },
 
 
