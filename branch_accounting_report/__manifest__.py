@@ -3,7 +3,7 @@
 
 {
     "name" : "Financial Reports For Branch -Enterprise Edition Odoo",
-    "version" : "12.0.0.2",
+    "version" : "12.0.0.3",
     "category" : "Accounting",
     'summary': 'This app helps to provide branch wise filter on all Financial statement for Enterprise edition',
     "description": """
