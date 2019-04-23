@@ -109,8 +109,8 @@ var _t = core._t;
                 if (''+el.id == ''+option_id){
                     if (el.selected === undefined || el.selected === null){el.selected = false;}
                     el.selected = !el.selected;
-                //}else if (option_value === 'ir_filters') {
-                //    el.selected = false;
+                }else if (option_value === 'ir_filters') {
+                    el.selected = false;
                 }
                 return el;
             });
@@ -172,7 +172,7 @@ var _t = core._t;
                 })
             });
 
-        partner filter
+        //partner filter
         if (this.report_options.partner) {
             if (!this.M2MFilters) {
                 var fields = {};
