@@ -25,7 +25,7 @@ var _t = core._t;
 
         render_searchview_buttons: function() {
             var self = this;
-            this._super();
+            //this._super();
             // fold all menu
         // bind searchview buttons/filter to the correct actions
         var $datetimepickers = this.$searchview_buttons.find('.js_account_reports_datetimepicker');
