@@ -7,16 +7,16 @@
 		<t t-jquery="div.pos-branding" t-operation="replace">
 		    <div class="pos-branding">
 		        <img id="pos-logo" style="max-height:1cm; max-width:4cm;"/>
-		        
+
 		        <span class="placeholder-UsernameWidget"></span>
-		    </div>        
+		    </div>
 		</t>
 	</t>
 
 
 	<!-- Add Company Logo & Full Address in PosTicket -->
     <t t-extend="PosTicket">
-    
+
         <!-- Add Company Logo -->
         <t t-jquery="div.pos-center-align" t-operation="before">
             <div class="pos-center-align">
@@ -25,9 +25,9 @@
 				 <!-- OR <img t-att-src="widget.pos.company_logo_base64" style="max-height: 1cm; max-width: 4cm;"/>-->
 			</div>
         </t>
-        
+
         <!-- Add Company Full Address -->
-        <t t-jquery="[t-esc='widget.pos.company.name']" t-operation="replace">
+        <!-- <t t-jquery="[t-esc='widget.pos.company.name']" t-operation="replace">
             <t t-esc="widget.pos.company.name"/><br />
             Street: <t t-esc="widget.pos.company.street || ''"/><br />
             City: <t t-esc="widget.pos.company.city || ''"/><br />
@@ -35,10 +35,10 @@
             Country: <t t-esc="widget.pos.company.country_id[1] || ''"/><br />
             Website: <t t-esc="widget.pos.company.website || ''"/><br />
             Email: <t t-esc="widget.pos.company.email || ''"/>
-        </t>
-   
+        </t> -->
+
     </t>
-    
-    
-   
+
+
+
   	</templates>

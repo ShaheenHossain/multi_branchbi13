@@ -11,8 +11,10 @@
     'description': """
         Allows to print kitchen receipt with customer receipt from pos screen
     """,
-    'depends': ['bi_pos_multi_ticket', 'pos_logo_change'],
-    'data': [],
+    'depends': ['pos_logo_change', 'bi_pos_multi_ticket'],
+    'data': [
+        'views/point_of_sale.xml'
+    ],
     'qweb': ['static/src/xml/pos.xml'],
     'images': [],
     'price': 0.0,
