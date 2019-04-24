@@ -3,4 +3,5 @@
 
 12.0.0.3 ==> partner filter is not working in any reports.
 
-12.0.0.3.1 ==> Revoke previous changes.
+12.0.0.4 ==> custom filter and partner filter conflict solve
+update journal entires methdo changes
