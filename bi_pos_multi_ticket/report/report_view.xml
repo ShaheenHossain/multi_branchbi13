@@ -11,7 +11,7 @@
 				<table  class="table table-sm">
 					<tbody>
 					<tr >
-						<td colspan="3" >Date</td><td>From:<t t-esc="date_start" t-options="{'widget': 'datetime'}"/> -To: <t t-esc="date_stop" t-options="{'widget': 'datetime'}"/></td>
+						<td colspan="3" >Date</td><td>From:<t t-esc="start_date"/> -To: <t t-esc="end_date"/> </td>
 					</tr>
 					<tr >
 						<td colspan="3" >POS</td><td><t t-esc="configs_name"/></td>
