@@ -105,7 +105,7 @@
         <t t-jquery="[t-esc='order.formatted_validation_date']" t-operation="replace"/>
         <t t-jquery="[t-esc='order.name']" t-operation="replace"/>
         <t t-jquery="[t-if='receipt.header']" t-operation="replace">
-            <div style='text-align:center; margin-top: -20px;'>
+            <div style='text-align:center;'>
                 <t t-raw="receipt.header" />
                 <div style="display: flex;text-align: left;margin-bottom: 10px;">
                     <div class="receipt-user" style= "flex: 1 1 50%;">
@@ -134,7 +134,7 @@
             <attribute name="style">display: none;</attribute>
         </t>
         <t t-jquery="[t-if='receipt.footer']" t-operation="replace">
-            <div style='text-align:center; margin-top: -35px;'>
+            <div style='text-align:center;'>
                 <t t-raw="receipt.footer" />
             </div>
         </t>
