@@ -20,21 +20,21 @@ msgstr ""
 #: code:addons/pos_receipt_kitchen/static/src/xml/pos.xml:169
 #, python-format
 msgid "Dine In"
-msgstr "سفري"
+msgstr "محلي"
 
 #. module: pos_receipt_kitchen
 #. openerp-web
 #: code:addons/pos_receipt_kitchen/static/src/xml/pos.xml:170
 #, python-format
 msgid "Dine Out"
-msgstr "محلي"
+msgstr "سفري"
 
 #. module: pos_receipt_kitchen
 #. openerp-web
 #: code:addons/pos_receipt_kitchen/static/src/xml/pos.xml:97
 #, python-format
 msgid "Dine:"
-msgstr ""
+msgstr "ك"
 
 #. module: pos_receipt_kitchen
 #. openerp-web

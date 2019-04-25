@@ -20,7 +20,9 @@
         <!-- Add Company Logo -->
         <t t-jquery="div.pos-center-align" t-operation="before">
             <div class="pos-center-align">
-				 <img t-att-src="'data:image/png;base64,'+ widget.pos.config.pos_logo" style="max-height: 1cm; max-width: 4cm;"/>
+                <img t-attf-src="/web/image?model=pos.config&amp;field=pos_logo&amp;id=#{widget.pos.config.id}" style="max-height: initial; max-width: 100%; width: 75%; height: 1cm;"/>
+                 <!-- <img t-att-src="'data:image/png;base64,'+ widget.pos.config.pos_logo" style="max-height: initial; max-width: 100%; width: 75%; height: 1cm;"/> -->
+                 <!-- style="max-height: 1cm; max-width: 4cm;" -->
 				 <!-- OR widget.pos.config.pos_logo -->
 				 <!-- OR <img t-att-src="widget.pos.company_logo_base64" style="max-height: 1cm; max-width: 4cm;"/>-->
 			</div>

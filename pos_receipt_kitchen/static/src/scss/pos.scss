@@ -19,3 +19,14 @@
     position: relative;
     margin-top: 30px;
 }
+
+.o_rtl .o_content .pos-right-align.rtl_layout {
+    text-align: left !important;
+}
+
+.o_rtl .o_content .pos-text-right-rtl {
+    text-align: right !important;
+}
+.o_rtl .o_content .pos-text-left-rtl {
+    text-align: left !important;
+}

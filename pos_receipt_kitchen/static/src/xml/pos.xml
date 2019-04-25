@@ -7,16 +7,16 @@
             <br />
             <t t-if="widget.pos.config.enable_invoive_prefix">
                 <div style="text-align:center;">
-                    <b> Ticket Number:&#160; <t t-esc ="receipt.ticket_number"/> </b>
+                    <b><h2><t t-esc ="receipt.ticket_number"/></h2></b>
                 </div>
             </t>
             <br/>
             <table class='receipt-orderlines'>
                 <thead>
                     <th width='40%'>Item</th>
-                    <th class="pos-right-align" width='20%'>Qty</th>
-                    <th class="pos-right-align" width='20%'>Price</th>
-                    <th class="pos-right-align" width='20%'>Total</th>
+                    <th class="pos-right-align rtl_layout" width='20%'>Qty</th>
+                    <th class="pos-right-align rtl_layout" width='20%'>Price</th>
+                    <th class="pos-right-align rtl_layout" width='20%'>Total</th>
                 </thead>
                 <tr t-foreach="orderlines" t-as="orderline">
                     <td>
@@ -27,14 +27,14 @@
                             </div>
                         </t>
                     </td>
-                    <td class="pos-right-align">
-                        <t t-esc="orderline.get_quantity_str_with_unit()"/>
+                    <td class="pos-right-align rtl_layout">
+                        <t t-esc="orderline.get_quantity()"/>
                     </td>
-                    <td class="pos-right-align">
+                    <td class="pos-right-align rtl_layout">
                         <t t-esc="orderline.get_unit_display_price()"/>
                     </td>
-                    <td class="pos-right-align">
-                        <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                    <td class="pos-right-align rtl_layout">
+                        <t t-esc="orderline.get_display_price()"/>
                     </td>
                 </tr>
             </table>
@@ -43,14 +43,14 @@
                 <tr>
                     <td>Subtotal:</td>
                     <td class="pos-right-align">
-                        <t t-esc="widget.format_currency(order.get_total_without_tax())"/>
+                        <t t-esc="widget.format_currency_no_symbol(order.get_total_without_tax())"/>
                     </td>
                 </tr>
                 <t t-foreach="order.get_tax_details()" t-as="taxdetail">
                     <tr>
                         <td><t t-esc="taxdetail.name" /></td>
                         <td class="pos-right-align">
-                            <t t-esc="widget.format_currency(taxdetail.amount)" />
+                            <t t-esc="widget.format_currency_no_symbol(taxdetail.amount)" />
                         </td>
                     </tr>
                 </t>
@@ -58,14 +58,14 @@
                     <t t-if="order.get_total_discount() > 0">
                         <td>Discount:</td>
                         <td class="pos-right-align">
-                            <t t-esc="widget.format_currency(order.get_total_discount())"/>
+                            <t t-esc="widget.format_currency_no_symbol(order.get_total_discount())"/>
                         </td>
                     </t>
                 </tr>
                 <tr class="emph">
                     <td>Total:</td>
                     <td class="pos-right-align">
-                        <t t-esc="widget.format_currency(order.get_total_with_tax())"/>
+                        <t t-esc="widget.format_currency_no_symbol(order.get_total_with_tax())"/>
                     </td>
                 </tr>
             </table>
@@ -77,7 +77,7 @@
                           <t t-esc="line.name"/>
                       </td>
                       <td class="pos-right-align">
-                          <t t-esc="widget.format_currency(line.get_amount())"/>
+                          <t t-esc="widget.format_currency_no_symbol(line.get_amount())"/>
                       </td>
                   </tr>
                 </t>
@@ -85,7 +85,7 @@
             <br />
             <table class='receipt-change'>
                 <tr><td>Change:</td><td class="pos-right-align">
-                    <t t-esc="widget.format_currency(order.get_change())"/>
+                    <t t-esc="widget.format_currency_no_symbol(order.get_change())"/>
                     </td></tr>
             </table>
         </div>
@@ -102,21 +102,54 @@
         <t t-jquery=".pos-sale-ticket" t-operation="attributes">
             <attribute name="style">padding-right: 25px;</attribute>
         </t>
+
+        <t t-jquery="[t-esc='orderline.get_quantity_str_with_unit()']" t-operation="replace">
+            <t t-esc="orderline.get_quantity()"/>
+        </t>
+        <t t-jquery="[t-esc='widget.format_currency(orderline.get_display_price())']" t-operation="replace">
+            <t t-esc="orderline.get_display_price()"/>
+        </t>
+        <t t-jquery="[t-esc='widget.format_currency(order.get_total_without_tax())']" t-operation="replace">
+            <t t-esc="widget.format_currency_no_symbol(order.get_total_without_tax())"/>
+        </t>
+        <t t-jquery="[t-esc='widget.format_currency(taxdetail.amount)']" t-operation="replace">
+            <t t-esc="widget.format_currency_no_symbol(taxdetail.amount)"/>
+        </t>
+        <t t-jquery="[t-esc='widget.format_currency(order.get_total_discount())']" t-operation="replace">
+            <t t-esc="widget.format_currency_no_symbol(order.get_total_discount())"/>
+        </t>
+        <t t-jquery="[t-esc='widget.format_currency(order.get_total_with_tax())']" t-operation="replace">
+            <t t-esc="widget.format_currency_no_symbol(order.get_total_with_tax())"/>
+        </t>
+        <t t-jquery="[t-esc='widget.format_currency(line.get_amount())']" t-operation="replace">
+            <t t-esc="widget.format_currency_no_symbol(line.get_amount())"/>
+        </t>
+        <t t-jquery="[t-esc='widget.format_currency(order.get_change())']" t-operation="replace">
+            <t t-esc="widget.format_currency_no_symbol(order.get_change())"/>
+        </t>
+
+        <t t-jquery="[t-esc='widget.pos.company.name']" t-operation="replace"/>
+        <t t-jquery="[t-esc='order.formatted_validation_date']" t-operation="replace"/>
         <t t-jquery="[t-esc='order.formatted_validation_date']" t-operation="replace"/>
         <t t-jquery="[t-esc='order.name']" t-operation="replace"/>
+        <t t-jquery="[t-if='widget.pos.config.enable_invoive_prefix']" t-operation="replace">
+            <div style="text-align:center;">
+                <b><h2><t t-esc ="receipt.ticket_number"/></h2></b>
+            </div>
+        </t>
         <t t-jquery="[t-if='receipt.header']" t-operation="replace">
-            <div style='text-align:center;'>
+            <div style='text-align:center; margin-top: -20px;'>
                 <t t-raw="receipt.header" />
-                <div style="display: flex;text-align: left;margin-bottom: 10px;">
-                    <div class="receipt-user" style= "flex: 1 1 50%;">
+                <div class="text-right" style="display: flex;text-align: left;margin-bottom: 10px;">
+                    <div class="receipt-user pos-text-left-rtl" style= "flex: 1 1 70%;">
                         <div>
-                            Invoice No: <t t-esc="order.name"/>
+                            Invoice No: <t t-esc="receipt.order_name"/>
                         </div>
                         <div class="receipt-user">
                             User: <t t-esc="widget.pos.get_cashier().name"/><br />
                         </div>
                     </div>
-                    <div style= "flex: 1 1 50%;text-align: right;">
+                    <div class="pos-text-right-rtl" style= "flex: 1 1 30%;text-align: right;">
                         <div>
                             <t t-esc="receipt.receipt_date"/>
                         </div>
@@ -141,16 +174,23 @@
         <t t-jquery=".receipt-orderlines colgroup" t-operation="replace">
             <thead>
                 <th width='40%'>Item</th>
-                <th class="pos-right-align" width='20%'>Qty</th>
-                <th class="pos-right-align" width='20%'>Price</th>
-                <th class="pos-right-align" width='20%'>Total</th>
+                <th class="pos-right-align rtl_layout" width='20%'>Qty</th>
+                <th class="pos-right-align rtl_layout" width='20%'>Price</th>
+                <th class="pos-right-align rtl_layout" width='20%'>Total</th>
             </thead>
         </t>
         <t t-jquery="[t-foreach='orderlines'] td:nth-child(2)" t-operation="after">
-            <td class="pos-right-align">
+            <td class="pos-right-align rtl_layout">
                 <t t-esc="orderline.get_unit_display_price()"/>
             </td>
         </t>
+        <t t-jquery="[t-foreach='orderlines'] td:nth-child(2)" t-operation="attributes">
+            <attribute name="class">pos-right-align rtl_layout</attribute>
+        </t>
+        <t t-jquery="[t-foreach='orderlines'] td:nth-child(4)" t-operation="attributes">
+            <attribute name="class">pos-right-align rtl_layout</attribute>
+        </t>
+
         <t t-jquery=".pos-sale-ticket" t-operation="after">
             <div style="page-break-before: always;"/>
             <t t-call="PosTicketKitchen"/>
@@ -162,8 +202,8 @@
         <t t-jquery=".paymentmethods-container" t-operation="after">
             <select name='dine_in_out' id="dine_in_out" class="dine">
                 <option value='' selected="selected">Select Dine In / Dine Out</option>
-                <option value='Dine In'>Dine In</option>
-                <option value='Dine Out'>Dine Out</option>
+                <option value='محلي'>Dine In</option>
+                <option value='سفري'>Dine Out</option>
             </select>
         </t>
     </t>
