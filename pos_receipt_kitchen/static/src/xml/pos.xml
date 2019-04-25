@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
 
     <t t-name="PosTicketKitchen">
-        <div class="pos-sale-ticket" style="font-size: 15px; padding-right: 25px;">
+        <div class="pos-sale-ticket" style="font-size: 17px; padding-right: 25px;">
             <div class="pos-center-align"><t t-esc="order.formatted_validation_date"/> <t t-esc="order.name"/></div>
             <br />
             <t t-if="widget.pos.config.enable_invoive_prefix">
@@ -11,6 +11,11 @@
                 </div>
             </t>
             <br/>
+            <div>
+                <center>
+                    <t t-esc="receipt.dine_option"/>
+                </center>
+            </div>
             <table class='receipt-orderlines'>
                 <thead>
                     <th width='40%'>Item</th>
@@ -18,7 +23,7 @@
                     <th class="pos-right-align rtl_layout" width='20%'>Price</th>
                     <th class="pos-right-align rtl_layout" width='20%'>Total</th>
                 </thead>
-                <tr t-foreach="orderlines" t-as="orderline">
+                <tr t-foreach="orderlines" t-as="orderline" style="height: 40px !important;">
                     <td>
                         <t t-esc="orderline.get_product().display_name"/>
                          <t t-if="orderline.get_discount() > 0">
@@ -34,8 +39,9 @@
                         <t t-esc="orderline.get_unit_display_price()"/>
                     </td>
                     <td class="pos-right-align rtl_layout">
-                        <t t-esc="orderline.get_display_price()"/>
+                        <t t-esc="widget.format_currency_no_symbol(orderline.get_display_price())"/>
                     </td>
+                    <br/>
                 </tr>
             </table>
             <br />
@@ -95,7 +101,9 @@
         <t t-jquery=".receipt-user" t-operation="replace"/>
         <t t-jquery=".receipt-orderlines" t-operation="before">
             <div>
-                Dine: <t t-esc="receipt.dine_option"/>
+                <center>
+                    <t t-esc="receipt.dine_option"/>
+                </center>
             </div>
             <br/>
         </t>
@@ -107,7 +115,7 @@
             <t t-esc="orderline.get_quantity()"/>
         </t>
         <t t-jquery="[t-esc='widget.format_currency(orderline.get_display_price())']" t-operation="replace">
-            <t t-esc="orderline.get_display_price()"/>
+            <t t-esc="widget.format_currency_no_symbol(orderline.get_display_price())"/>
         </t>
         <t t-jquery="[t-esc='widget.format_currency(order.get_total_without_tax())']" t-operation="replace">
             <t t-esc="widget.format_currency_no_symbol(order.get_total_without_tax())"/>
@@ -202,8 +210,8 @@
         <t t-jquery=".paymentmethods-container" t-operation="after">
             <select name='dine_in_out' id="dine_in_out" class="dine">
                 <option value='' selected="selected">Select Dine In / Dine Out</option>
-                <option value='محلي'>Dine In</option>
-                <option value='سفري'>Dine Out</option>
+                <option value='سفري'>Dine In</option>
+                <option value='محلي'>Dine Out</option>
             </select>
         </t>
     </t>

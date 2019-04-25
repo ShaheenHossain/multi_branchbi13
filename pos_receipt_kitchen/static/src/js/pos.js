@@ -14,7 +14,7 @@ models.Order = models.Order.extend({
         json.receipt_date = receipt_date_time[0]
         json.receipt_time = receipt_date_time[1]
         json.dine_option = $('#dine_in_out').val()
-        json.order_name = self.name.split(' ')[1]
+        json.order_name = self.uid
         return json;
     },
 });

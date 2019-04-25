@@ -1,6 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 #   * pos_receipt_kitchen
+#   * point_of_sale
 #
 msgid ""
 msgstr ""
@@ -20,14 +21,14 @@ msgstr ""
 #: code:addons/pos_receipt_kitchen/static/src/xml/pos.xml:169
 #, python-format
 msgid "Dine In"
-msgstr "محلي"
+msgstr "سفري"
 
 #. module: pos_receipt_kitchen
 #. openerp-web
 #: code:addons/pos_receipt_kitchen/static/src/xml/pos.xml:170
 #, python-format
 msgid "Dine Out"
-msgstr "سفري"
+msgstr "محلي"
 
 #. module: pos_receipt_kitchen
 #. openerp-web
@@ -107,3 +108,11 @@ msgstr "المجموع"
 #, python-format
 msgid "User:"
 msgstr "البائع"
+
+#. module: point_of_sale
+#. openerp-web
+#: code:addons/point_of_sale/static/src/js/models.js:1958
+#: code:addons/point_of_sale/static/src/js/models.js:1998
+#, python-format
+msgid "Order "
+msgstr "فاتورة"
