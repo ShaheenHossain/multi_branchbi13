@@ -20,6 +20,7 @@ class sale_order(models.Model):
                 amount_untaxed += line.price_subtotal
                 amount_tax += line.price_tax
             # order_discount = self._calculate_discount()
+            # if order.discount_amount==0.0:
             if order.discount_method == 'per':
                 order_discount = amount_untaxed * (order.discount_amount / 100)
                 if order.order_line:
@@ -33,7 +34,6 @@ class sale_order(models.Model):
                             taxes = line.tax_id.compute_all(discount, \
                                                 order.currency_id,1.0, product=line.product_id, \
                                                 partner=order.partner_id)
-
                             sums += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
 
                 amount_after_discount = amount_untaxed - order_discount
@@ -51,13 +51,10 @@ class sale_order(models.Model):
                         if line.tax_id:
                             final_discount = ((order.discount_amount*line.price_subtotal)/amount_untaxed)
                             discount = line.price_subtotal - final_discount
-
                             taxes = line.tax_id.compute_all(discount, \
                                                 order.currency_id,1.0, product=line.product_id, \
                                                 partner=order.partner_id)
-
                             sums += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
-
                 amount_after_discount = amount_untaxed - order_discount
 
                 order.update({
@@ -77,7 +74,7 @@ class sale_order(models.Model):
 
     discount_method = fields.Selection([('fix', 'Fixed'), ('per', 'Percentage')], 'Discount Method',default='fix')
     discount_amount = fields.Float('Discount Amount',default=0.0)
-    discount_amt = fields.Monetary(compute='_amount_all',store=True, string='- Discount', digits_compute=dp.get_precision('Account'), readonly=True)
+    discount_amt = fields.Monetary(compute='_amount_all',store=True, string='- Discount', readonly=True)
     amount_after_discount = fields.Monetary(string='Amount After Discount',store=True, readonly=True, compute='_amount_all')
 
 

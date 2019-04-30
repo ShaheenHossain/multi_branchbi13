@@ -63,31 +63,30 @@ class account_invoice(models.Model):
 		self.amount_total_company_signed = amount_total_company_signed * sign
 		self.amount_total_signed = self.amount_total * sign
 		self.amount_untaxed_signed = amount_untaxed_signed * sign
-		if self.discount_method == 'fix':
-			if self.invoice_line_ids:
-				for line in self.invoice_line_ids:
-					if line.invoice_line_tax_ids:
-						if self.amount_untaxed:
-							final_discount = ((self.discount_amt*line.price_subtotal)/self.amount_untaxed)
+		if self.discount_amount!=0.0:
+			if self.discount_method == 'fix':
+				if self.invoice_line_ids:
+					for line in self.invoice_line_ids:
+						if line.invoice_line_tax_ids:
+							if self.amount_untaxed:
+								final_discount = ((self.discount_amt*line.price_subtotal)/self.amount_untaxed)
+								discount = line.price_subtotal - final_discount
+								taxes = line.invoice_line_tax_ids.compute_all(discount, self.currency_id, 1.0,
+																line.product_id,self.partner_id)
+								sums += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
+				self.amount_total = sums + self.amount_untaxed - self.discount_amt
+				self.amount_tax = sums
+			elif self.discount_method == 'per':
+				if self.invoice_line_ids:
+					for line in self.invoice_line_ids:
+						if line.invoice_line_tax_ids:
+							final_discount = ((self.discount_amount*line.price_subtotal)/100.0)
 							discount = line.price_subtotal - final_discount
 							taxes = line.invoice_line_tax_ids.compute_all(discount, self.currency_id, 1.0,
 															line.product_id,self.partner_id)
 							sums += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
-						else:
-							raise Warning("please first deliverd quantity of selected purchase order.")
-			self.amount_total = sums + self.amount_untaxed - self.discount_amt
-			self.amount_tax = sums
-		elif self.discount_method == 'per':
-			if self.invoice_line_ids:
-				for line in self.invoice_line_ids:
-					if line.invoice_line_tax_ids:
-						final_discount = ((self.discount_amount*line.price_subtotal)/100.0)
-						discount = line.price_subtotal - final_discount
-						taxes = line.invoice_line_tax_ids.compute_all(discount, self.currency_id, 1.0,
-														line.product_id,self.partner_id)
-						sums += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
-			self.amount_total = sums + self.amount_untaxed - self.discount_amt
-			self.amount_tax = sums
+				self.amount_total = sums + self.amount_untaxed - self.discount_amt
+				self.amount_tax = sums
 		else:
 			self.amount_total = self.amount_tax + self.amount_untaxed
 
@@ -140,8 +139,8 @@ class account_invoice(models.Model):
 				for line in self.invoice_line_ids:
 					if line.invoice_line_tax_ids:
 						final_discount = ((self.discount_amt*line.price_subtotal)/self.amount_untaxed)
-						discount = line.price_subtotal - final_discount
-						taxes = line.invoice_line_tax_ids.compute_all(discount, self.currency_id, 1.0,
+						discount = line.price_subtotal - round_curr(final_discount)
+						taxes = line.invoice_line_tax_ids.compute_all(round_curr(discount), self.currency_id, 1.0,
 														line.product_id,self.partner_id)['taxes']
 						# sums += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
 						for tax in taxes:              
@@ -194,7 +193,7 @@ class account_invoice(models.Model):
 	@api.model
 	def invoice_line_move_line_get(self):
 		res = []
-		
+		round_curr = self.currency_id.round
 		for line in self.invoice_line_ids:
 			final_discount = 0  
 			if not line.account_id:
@@ -204,7 +203,8 @@ class account_invoice(models.Model):
 
 			if self.discount_method == 'fix':
 				if self.discount_amount != 0.0:
-					final_discount = ((self.discount_amt*line.price_subtotal)/self.amount_untaxed)
+					discount = ((self.discount_amt*line.price_subtotal)/self.amount_untaxed)
+					final_discount = round_curr(discount)
 			elif self.discount_method == 'per':
 				if self.discount_amount != 0.0:
 					final_discount = ((self.discount_amount*line.price_subtotal)/100.0)
@@ -225,7 +225,7 @@ class account_invoice(models.Model):
 				'name': line.name,
 				'price_unit': line.price_unit,
 				'quantity': line.quantity,
-				'price': line.price_subtotal - round(final_discount,2),
+				'price': line.price_subtotal -final_discount,
 				'account_id': line.account_id.id,
 				'product_id': line.product_id.id,
 				'uom_id': line.uom_id.id,
@@ -234,8 +234,19 @@ class account_invoice(models.Model):
 				'tax_ids': tax_ids,
 				'invoice_id': self.id,
 			}
+
 			res.append(move_line_dict)
+
+		if self.company_id.anglo_saxon_accounting and self.type in ('out_invoice', 'out_refund'):
+			for i_line in self.invoice_line_ids:
+				res.extend(self._anglo_saxon_sale_move_lines(i_line))
+				
+		if self.env.user.company_id.anglo_saxon_accounting:
+			if self.type in ['in_invoice', 'in_refund']:
+				for i_line in self.invoice_line_ids:
+					res.extend(self._anglo_saxon_purchase_move_lines(i_line, res))
 		return res
+
 
 
 class StockMoveInherit(models.Model):
@@ -258,13 +269,13 @@ class StockMoveInherit(models.Model):
 						if line.product_id == self.product_id:
 							if new_id.discount_method == 'fix':
 								if new_id.discount_amount != 0.0:
-									final_discount = ((new_id.discount_amt*line.price_subtotal)/new_id.amount_untaxed)
+									discount = ((new_id.discount_amt*line.price_subtotal)/new_id.amount_untaxed)
+									final_discount = discount
 							elif new_id.discount_method == 'per':
 								if new_id.discount_amount != 0.0:
 									final_discount = ((new_id.discount_amount*line.price_subtotal)/100.0)
 							else:
 								final_discount = 0
-
 		if self._context.get('forced_ref'):
 			ref = self._context['forced_ref']
 		else:

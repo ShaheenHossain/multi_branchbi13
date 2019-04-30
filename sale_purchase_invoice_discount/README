@@ -40,3 +40,7 @@ discount not update in invoice while create bill in po
 
 12.0.0.9
 remove 0.01 amount difference generate and po gives unbalance journal entires
+
+12.0.0.10
+remove installation errors.
+journal entries issue solved

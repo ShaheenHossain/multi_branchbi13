@@ -2,7 +2,7 @@
 # Part of BrowseInfo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Sale Purchase Invoice Discount in Odoo',
-    'version': '12.0.0.9',
+    'version': '12.0.0.10',
     'category': 'Sales',
     'sequence': 14,
     'price': '25',

@@ -16,54 +16,55 @@ class purchase_order(models.Model):
                 amount_untaxed += line.price_subtotal
                 amount_tax += line.price_tax
             taxes = {}
-            if order.discount_method == 'per':
-                order_discount = amount_untaxed * (order.discount_amount / 100)
-                if order.order_line:
-                    for line in order.order_line:
-                        if line.taxes_id:
+            if order.discount_amount!=0.0:
+                if order.discount_method == 'per':
+                    order_discount = amount_untaxed * (order.discount_amount / 100)
+                    if order.order_line:
+                        for line in order.order_line:
+                            if line.taxes_id:
 
-                            final_discount = ((order.discount_amount*line.price_subtotal)/100.0)
+                                final_discount = ((order.discount_amount*line.price_subtotal)/100.0)
 
-                            discount = line.price_subtotal - final_discount
+                                discount = line.price_subtotal - final_discount
 
-                            taxes = line.taxes_id.compute_all(discount, \
-                                                order.currency_id,1.0, product=line.product_id, \
-                                                partner=order.partner_id)
+                                taxes = line.taxes_id.compute_all(discount, \
+                                                    order.currency_id,1.0, product=line.product_id, \
+                                                    partner=order.partner_id)
 
-                            sums += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
-                
-                amount_after_discount = amount_untaxed - order_discount
-                
-                order.update({
-                    'amount_untaxed': amount_untaxed,
-                    'amount_tax': sums,
-                    'amount_total': amount_untaxed + sums - order_discount,
-                    'discount_amt' : order_discount,
-                    'amount_after_discount' : amount_after_discount
-                })
-            elif order.discount_method == 'fix':
-                order_discount = order.discount_amount
-                if order.order_line:
-                    for line in order.order_line:
-                        if line.taxes_id:
-                            # final_discount = ((order.discount_amount*line.price_subtotal)/100.0)
-                            final_discount = ((order.discount_amount*line.price_subtotal)/amount_untaxed)
-                            discount = line.price_subtotal - final_discount
+                                sums += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
+                    
+                    amount_after_discount = amount_untaxed - order_discount
+                    
+                    order.update({
+                        'amount_untaxed': amount_untaxed,
+                        'amount_tax': sums,
+                        'amount_total': amount_untaxed + sums - order_discount,
+                        'discount_amt' : order_discount,
+                        'amount_after_discount' : amount_after_discount
+                    })
+                elif order.discount_method == 'fix':
+                    order_discount = order.discount_amount
+                    if order.order_line:
+                        for line in order.order_line:
+                            if line.taxes_id:
+                                # final_discount = ((order.discount_amount*line.price_subtotal)/100.0)
+                                final_discount = ((order.discount_amount*line.price_subtotal)/amount_untaxed)
+                                discount = line.price_subtotal - round(final_discount,2)
 
-                            taxes = line.taxes_id.compute_all(discount, \
-                                                order.currency_id,1.0, product=line.product_id, \
-                                                partner=order.partner_id)
+                                taxes = line.taxes_id.compute_all(discount, \
+                                                    order.currency_id,1.0, product=line.product_id, \
+                                                    partner=order.partner_id)
 
-                            sums += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
+                                sums += sum(t.get('amount', 0.0) for t in taxes.get('taxes', []))
 
-                amount_after_discount = amount_untaxed - order_discount
-                order.update({
-                    'amount_untaxed': amount_untaxed,
-                    'amount_tax': sums,
-                    'amount_total': amount_untaxed + sums - order_discount,
-                    'discount_amt' : order_discount,
-                    'amount_after_discount' : amount_after_discount
-                })
+                    amount_after_discount = amount_untaxed - order_discount
+                    order.update({
+                        'amount_untaxed': amount_untaxed,
+                        'amount_tax': sums,
+                        'amount_total': amount_untaxed + sums - order_discount,
+                        'discount_amt' : order_discount,
+                        'amount_after_discount' : amount_after_discount
+                    })
             else:
                 order.update({
                     'amount_untaxed': amount_untaxed,
@@ -109,5 +110,5 @@ class purchase_order(models.Model):
         
     discount_method = fields.Selection([('fix', 'Fixed'), ('per', 'Percentage')], 'Discount Method',default='fix')
     discount_amount = fields.Float('Discount Amount',default=0.0)
-    discount_amt = fields.Monetary(compute='_amount_all',store=True,string='- Discount',digits_compute=dp.get_precision('Account'),readonly=True)
+    discount_amt = fields.Monetary(compute='_amount_all',store=True,string='- Discount',readonly=True)
     amount_after_discount = fields.Monetary(string='Amount After Discount',store=True, readonly=True, compute='_amount_all')
