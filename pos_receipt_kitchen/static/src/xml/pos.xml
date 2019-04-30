@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
 
     <t t-name="PosTicketKitchen">
-        <div class="pos-sale-ticket" style="font-size: 17px; padding-right: 25px;">
+        <div class="pos-sale-ticket kitchen_receipt" style="padding-right: 25px;">
             <strong>
                 <div class="pos-center-align"><t t-esc="order.formatted_validation_date"/> <t t-esc="order.name"/></div>
                 <br />

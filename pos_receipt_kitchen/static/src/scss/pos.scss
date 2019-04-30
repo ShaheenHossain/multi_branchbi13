@@ -30,3 +30,9 @@
 .o_rtl .o_content .pos-text-left-rtl {
     text-align: left !important;
 }
+
+@media print {
+    .pos .pos-sale-ticket.kitchen_receipt{
+        font-size: 17px !important;
+    }
+}
