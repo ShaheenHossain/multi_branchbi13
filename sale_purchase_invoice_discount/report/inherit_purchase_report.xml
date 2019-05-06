@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_purchase_discount_inherit" inherit_id="purchase.report_purchaseorder_document">
+            <xpath expr="//div[@class='page']/div/div/table[@class='table table-sm']" position="replace">
+                <table class="table table-sm">
+                    <tr class="border-black">
+                        <td>
+                            <strong> Untaxed Amount</strong>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="o.amount_untaxed" />
+                        </td>
+                    </tr>
+                    <tr class="border-black">
+                        <td>
+                            <strong> Discount Amount</strong>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="o.discount_amt" />
+                        </td>
+                    </tr>
+                    <tr class="border-black">
+                        <td>
+                            <strong> Amount After Discount</strong>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="o.amount_after_discount" />
+                        </td>
+                    </tr>
+                    <tr class="border-black">
+                        <td>
+                            <strong>Taxes</strong>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="o.amount_tax"
+                                t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}' />
+                        </td>
+                    </tr>
+                    <tr class="border-black">
+                        <td>
+                            <strong>Total</strong>
+                        </td>
+                        <td class="text-right">
+                            <span t-field="o.amount_total"
+                                t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}' />
+                        </td>
+                    </tr>
+                </table>                
+            </xpath>
+            <xpath expr="//div[@id='total']" position="after">
+                <div class="row">
+                    <div t-attf-class="#{'col-4' if report_type != 'html' else 'col-sm-7 col-md-5'}">
+                        <table class="table table-sm">
+                            <tr class="border-black">
+                                <td>
+                                    <strong> Discount Method</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.discount_method" />
+                                </td>
+                            </tr>
+                            <tr class="border-black">
+                                <td>
+                                    <strong> Discount Amount</strong>
+                                </td>
+                                <td class="text-right">
+                                    <span t-field="o.discount_amount" /> 
+                                    <t t-if="o.discount_method == 'per'"><span class="oe_inline">&amp;nbsp;%</span></t>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>
