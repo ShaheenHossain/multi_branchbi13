@@ -10,8 +10,8 @@ from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMA
 class ClosedSessionReport(models.TransientModel):
 	_name = 'closed.session.report'
 	
-	start_date = fields.Datetime(required=True, default=fields.Datetime.now)
-	end_date = fields.Datetime(required=True, default=fields.Datetime.now)
+	start_date = fields.Date(required=True, default=datetime.now().date())
+	end_date = fields.Date(required=True, default=datetime.now().date())
 	company_id = fields.Many2one("res.company",string="Company",default=1)
 	pos_config_ids = fields.Many2many('pos.config', 'pos_config_session',string="POS Configs")
 	pos_session_ids = fields.Many2many('pos.session', 'pos_sessions',string="POS Sessions")
@@ -30,8 +30,9 @@ class ClosedSessionReport(models.TransientModel):
 	def _onchange_pos_config_ids(self):
 		lst =[]
 		for i in self.pos_config_ids:
-			for j in i.session_ids.ids:
-				lst.append(j)
+			for j in i.session_ids:
+				if j.state == 'closed':
+					lst.append(j.id)
 		return {'domain': {'pos_session_ids': [('id', 'in', lst)]}}
 
 	@api.multi
