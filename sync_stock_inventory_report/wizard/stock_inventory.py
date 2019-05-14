@@ -74,14 +74,14 @@ class StockInventoryReport(models.TransientModel):
                 and sw.id = %d
             """ % (where_str, self.warehouse_id.id)
 
-        if self.warehouse_id.branch_id:
-            where_str = """%s
-                and sml.branch_id = %d
-            """ % (where_str, self.warehouse_id.branch_id.id)
-        else:
-            where_str = """%s
-                and sml.branch_id is null
-            """ % (where_str)
+        # if self.warehouse_id.branch_id:
+        #     where_str = """%s
+        #         and sml.branch_id = %d
+        #     """ % (where_str, self.warehouse_id.branch_id.id)
+        # else:
+        #     where_str = """%s
+        #         and sml.branch_id is null
+        #     """ % (where_str)
 
         if self.available_in_pos:
             where_str = """%s
