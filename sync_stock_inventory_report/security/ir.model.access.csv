@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_inventory_movement_pivot,access.inventory.movement.pivot,model_inventory_movement_pivot,,1,1,1,1

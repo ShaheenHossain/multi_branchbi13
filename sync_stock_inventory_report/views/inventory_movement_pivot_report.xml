@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_inventory_movement_pivot_views_pivot" model="ir.ui.view">
+        <field name="name">inventory.movement.pivot.name</field>
+        <field name="model">inventory.movement.pivot</field>
+        <field name="arch" type="xml">
+            <pivot string="Inventory Movement" disable_linking="True">
+                <field name="product_id" type="row"/>
+                <field name="uom_id" type="measure"/>
+                <field name="initial_qty" type="measure"/>
+                <field name="delivered_qty" type="measure"/>
+                <field name="received_qty" type="measure"/>
+                <field name="internal_transfer" type="measure"/>
+                <field name="adjustment" type="measure"/>
+                <field name="balance_qty" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_inventory_movement_pivot_graph" model="ir.ui.view">
+        <field name="name">inventory.movement.pivot.graph</field>
+        <field name="model">inventory.movement.pivot</field>
+        <field name="arch" type="xml">
+            <graph string="Inventory Movement" type="line">
+                <field name="product_id" type="row" />
+                <field name="balance_qty" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+</odoo>
