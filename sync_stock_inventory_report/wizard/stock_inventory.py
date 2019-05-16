@@ -8,7 +8,8 @@ from io import BytesIO
 from odoo import models, fields, api, _
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, ustr
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT, ustr
+from itertools import groupby
 
 
 class StockInventoryReport(models.TransientModel):
@@ -48,10 +49,10 @@ class StockInventoryReport(models.TransientModel):
         from_str = """
             stock_move_line sml
             inner join stock_move sm on sml.move_id = sm.id
-            inner join stock_picking_type spt on (sm.picking_type_id = spt.id or sm.picking_type_id is null)
-            inner join stock_warehouse sw on spt.warehouse_id = sw.id
             inner join product_product pp on sml.product_id = pp.id
         """
+            # inner join stock_picking_type spt on (sm.picking_type_id = spt.id or sm.picking_type_id is null)
+            # inner join stock_warehouse sw on spt.warehouse_id = sw.id
         if product_categ_ids:
             from_str = """
                 %s inner join product_template pt on (pt.id = pp.product_tmpl_id and pt.categ_id in (%s))
@@ -64,15 +65,16 @@ class StockInventoryReport(models.TransientModel):
 
     @api.multi
     def get_where(self, location_ids=[], product_ids=[], from_date=False, to_date=False):
+        to_date = to_date.strftime(DEFAULT_SERVER_DATE_FORMAT + ' ' + '23:23:59')
         where_str = """
         sml.qty_done > 0
         and sml.date < '%s'
         and sm.company_id = %d""" % (to_date, self.company_id.id)
 
-        if self.warehouse_id:
-            where_str = """%s
-                and sw.id = %d
-            """ % (where_str, self.warehouse_id.id)
+        # if self.warehouse_id:
+        #     where_str = """%s
+        #         and sw.id = %d
+        #     """ % (where_str, self.warehouse_id.id)
 
         # if self.warehouse_id.branch_id:
         #     where_str = """%s
@@ -89,6 +91,7 @@ class StockInventoryReport(models.TransientModel):
             """ % (where_str, self.available_in_pos)
 
         if from_date:
+            from_date = from_date.strftime(DEFAULT_SERVER_DATE_FORMAT + ' ' + '00:00:01')
             where_str = """%s
                 and sml.date >= '%s'
             """ % (where_str, from_date)
@@ -130,7 +133,11 @@ class StockInventoryReport(models.TransientModel):
         adjustment = 0.0
 
         stock_move_line_ids = self.get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=self.from_date, to_date=self.to_date)
-        for stock_move_line in self.env['stock.move.line'].browse([i[0] for i in list(set(stock_move_line_ids))]):
+        move_line_ids = self.env['stock.move.line'].browse([i[0] for i in list(set(stock_move_line_ids))])
+        move_line_ids = move_line_ids.filtered(lambda l: (l.location_id.get_warehouse() and l.location_id.get_warehouse().id == self.warehouse_id.id) or (l.location_dest_id.get_warehouse() and l.location_dest_id.get_warehouse().id == self.warehouse_id.id))
+        for stock_move_line in move_line_ids:
+            from_location_warehouse = stock_move_line.location_id.get_warehouse()
+            to_location_warehouse = stock_move_line.location_dest_id.get_warehouse()
             if not stock_move_line.product_id.id in product_list:
                 product_list[stock_move_line.product_id.id] = {
                     'product': stock_move_line.product_id.name,
@@ -156,13 +163,17 @@ class StockInventoryReport(models.TransientModel):
                 product_list[stock_move_line.product_id.id]['adjustment'] += stock_move_line.qty_done
             elif stock_move_line.location_dest_id.usage == 'inventory':
                 product_list[stock_move_line.product_id.id]['adjustment'] -= stock_move_line.qty_done
-            elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and stock_move_line.move_id.location_id == stock_move_line.location_dest_id:
+            # elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and stock_move_line.move_id.location_id == stock_move_line.location_dest_id:
+            elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and (to_location_warehouse and to_location_warehouse.id == self.warehouse_id.id):
                 product_list[stock_move_line.product_id.id]['internal_transfer'] += stock_move_line.qty_done
-            elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and stock_move_line.move_id.location_id == stock_move_line.location_id:
+            # elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and stock_move_line.move_id.location_id == stock_move_line.location_id:
+            elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and (from_location_warehouse and from_location_warehouse.id == self.warehouse_id.id):
                 product_list[stock_move_line.product_id.id]['internal_transfer'] -= stock_move_line.qty_done
 
         stock_move_line_ids = self.get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date)
-        for stock_move_line in self.env['stock.move.line'].browse([i[0] for i in list(set(stock_move_line_ids))]):
+        move_line_ids = self.env['stock.move.line'].browse([i[0] for i in list(set(stock_move_line_ids))])
+        move_line_ids = move_line_ids.filtered(lambda l: (l.location_dest_id.get_warehouse() and l.location_dest_id.get_warehouse().id == self.warehouse_id.id))
+        for stock_move_line in move_line_ids:
             if stock_move_line.product_id.id in product_list:
                 product_list[stock_move_line.product_id.id]['initial_qty'] += stock_move_line.qty_done
 
