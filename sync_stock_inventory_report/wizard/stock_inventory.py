@@ -9,7 +9,6 @@ from odoo import models, fields, api, _
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT, DEFAULT_SERVER_DATE_FORMAT, ustr
-from itertools import groupby
 
 
 class StockInventoryReport(models.TransientModel):
@@ -41,7 +40,7 @@ class StockInventoryReport(models.TransientModel):
         if convert_date and user_tz:
             dt = pytz.UTC.localize(fields.Datetime.from_string(convert_date)).astimezone(user_tz)
             dt = ustr(dt).split('+')[0]
-            dt = datetime.strptime(str(dt), DEFAULT_SERVER_DATETIME_FORMAT)
+            dt = datetime.strptime(str(dt), DEFAULT_SERVER_DATETIME_FORMAT).date()
         return dt
 
     @api.multi
@@ -164,10 +163,10 @@ class StockInventoryReport(models.TransientModel):
             elif stock_move_line.location_dest_id.usage == 'inventory':
                 product_list[stock_move_line.product_id.id]['adjustment'] -= stock_move_line.qty_done
             # elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and stock_move_line.move_id.location_id == stock_move_line.location_dest_id:
-            elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and (to_location_warehouse and to_location_warehouse.id == self.warehouse_id.id):
+            elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and (to_location_warehouse and to_location_warehouse.id == self.warehouse_id.id) and to_location_warehouse != from_location_warehouse:
                 product_list[stock_move_line.product_id.id]['internal_transfer'] += stock_move_line.qty_done
             # elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and stock_move_line.move_id.location_id == stock_move_line.location_id:
-            elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and (from_location_warehouse and from_location_warehouse.id == self.warehouse_id.id):
+            elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and (from_location_warehouse and from_location_warehouse.id == self.warehouse_id.id) and to_location_warehouse != from_location_warehouse:
                 product_list[stock_move_line.product_id.id]['internal_transfer'] -= stock_move_line.qty_done
 
         stock_move_line_ids = self.get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date)
