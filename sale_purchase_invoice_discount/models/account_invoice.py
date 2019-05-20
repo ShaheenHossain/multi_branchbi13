@@ -258,10 +258,10 @@ class StockMoveInherit(models.Model):
 
 		active_model = self._context.get('active_model')
 		active_id = self._context.get('active_id')
+		final_discount = 0
 		if active_model and active_id:
 			new_id = self.env[active_model].browse(active_id)
 
-			final_discount = 0
 			if active_model == 'purchase.order':
 				if new_id.discount_method:
 					if new_id.order_line:
