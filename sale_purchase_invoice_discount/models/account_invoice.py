@@ -258,24 +258,24 @@ class StockMoveInherit(models.Model):
 
 		active_model = self._context.get('active_model')
 		active_id = self._context.get('active_id')
-
-		new_id = self.env[active_model].browse(active_id)
-
 		final_discount = 0
-		if active_model == 'purchase.order':
-			if new_id.discount_method:
-				if new_id.order_line:
-					for line in new_id.order_line:
-						if line.product_id == self.product_id:
-							if new_id.discount_method == 'fix':
-								if new_id.discount_amount != 0.0:
-									discount = ((new_id.discount_amt*line.price_subtotal)/new_id.amount_untaxed)
-									final_discount = discount
-							elif new_id.discount_method == 'per':
-								if new_id.discount_amount != 0.0:
-									final_discount = ((new_id.discount_amount*line.price_subtotal)/100.0)
-							else:
-								final_discount = 0
+		if active_model and active_id:
+			new_id = self.env[active_model].browse(active_id)
+
+			if active_model == 'purchase.order':
+				if new_id.discount_method:
+					if new_id.order_line:
+						for line in new_id.order_line:
+							if line.product_id == self.product_id:
+								if new_id.discount_method == 'fix':
+									if new_id.discount_amount != 0.0:
+										discount = ((new_id.discount_amt*line.price_subtotal)/new_id.amount_untaxed)
+										final_discount = discount
+								elif new_id.discount_method == 'per':
+									if new_id.discount_amount != 0.0:
+										final_discount = ((new_id.discount_amount*line.price_subtotal)/100.0)
+								else:
+									final_discount = 0
 		if self._context.get('forced_ref'):
 			ref = self._context['forced_ref']
 		else:
