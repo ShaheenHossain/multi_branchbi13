@@ -150,9 +150,9 @@ class StockInventoryReport(models.TransientModel):
                     'uom_id': stock_move_line.product_id.uom_id.name,
                     'product_uom_id': stock_move_line.product_id.uom_id.id,
                 }
-            if stock_move_line.location_id.usage == 'supplier':
+            if stock_move_line.location_id.usage in ['supplier','production']:
                 product_list[stock_move_line.product_id.id]['received_qty'] += stock_move_line.qty_done
-            elif stock_move_line.location_dest_id.usage == 'supplier':
+            elif stock_move_line.location_dest_id.usage in ['supplier','production']:
                 product_list[stock_move_line.product_id.id]['received_qty'] -= stock_move_line.qty_done
             elif stock_move_line.location_dest_id.usage == 'customer':
                 product_list[stock_move_line.product_id.id]['delivered_qty'] += stock_move_line.qty_done
