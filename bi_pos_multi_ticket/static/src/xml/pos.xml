@@ -8,7 +8,6 @@
 					<t t-foreach="widget.pos.config.number_of_invoice" t-as="line1">
 						<div class="pos-sale-ticket">
 							<div class="pos-center-align"><t t-esc="order.formatted_validation_date"/> <t t-esc="order.name"/></div>
-							<br />
 							<t t-esc="widget.pos.company.name"/><br />
 							<div class="receipt-phone">
 								Phone: <t t-esc="widget.pos.company.phone || ''"/><br />
@@ -16,7 +15,6 @@
 							<div class="receipt-user">
 								User: <t t-esc="widget.pos.get_cashier().name"/><br />
 							</div>
-							<br />
 							<t t-if="widget.pos.config.enable_invoive_prefix">
 								<div style="text-align:center;">
 									<b> Ticket Number:&#160; <t t-esc ="receipt.ticket_number"/> </b>
