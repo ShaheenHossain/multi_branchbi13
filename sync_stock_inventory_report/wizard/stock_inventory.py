@@ -64,7 +64,10 @@ class StockInventoryReport(models.TransientModel):
 
     @api.multi
     def get_where(self, location_ids=[], product_ids=[], from_date=False, to_date=False):
-        to_date = to_date.strftime(DEFAULT_SERVER_DATE_FORMAT + ' ' + '23:23:59')
+        if self.env.context.get('check_from_date'):
+            to_date = to_date.strftime(DEFAULT_SERVER_DATE_FORMAT + ' ' + '00:00:01')
+        else:
+            to_date = to_date.strftime(DEFAULT_SERVER_DATE_FORMAT + ' ' + '23:23:59')
         where_str = """
         sml.qty_done > 0
         and sml.date < '%s'
@@ -169,7 +172,7 @@ class StockInventoryReport(models.TransientModel):
             elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and (from_location_warehouse and from_location_warehouse.id == self.warehouse_id.id) and to_location_warehouse != from_location_warehouse:
                 product_list[stock_move_line.product_id.id]['internal_transfer'] -= stock_move_line.qty_done
 
-        stock_move_line_ids = self.get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date)
+        stock_move_line_ids = self.with_context({'check_from_date': True}).get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date)
         move_line_ids = self.env['stock.move.line'].browse([i[0] for i in list(set(stock_move_line_ids))])
         move_line_ids = move_line_ids.filtered(lambda l: (l.location_dest_id.get_warehouse() and l.location_dest_id.get_warehouse().id == self.warehouse_id.id))
         for stock_move_line in move_line_ids:
