@@ -135,7 +135,7 @@ class StockInventoryReport(models.TransientModel):
         adjustment = 0.0
 
         stock_move_line_ids = self.get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=self.from_date, to_date=self.to_date)
-        move_line_ids = self.env['stock.move.line'].browse([i[0] for i in list(set(stock_move_line_ids))])
+        move_line_ids = self.env['stock.move.line'].sudo().browse([i[0] for i in list(set(stock_move_line_ids))])
         move_line_ids = move_line_ids.filtered(lambda l: (l.location_id.get_warehouse() and l.location_id.get_warehouse().id == self.warehouse_id.id) or (l.location_dest_id.get_warehouse() and l.location_dest_id.get_warehouse().id == self.warehouse_id.id))
         for stock_move_line in move_line_ids:
             from_location_warehouse = stock_move_line.location_id.get_warehouse()
@@ -173,7 +173,7 @@ class StockInventoryReport(models.TransientModel):
                 product_list[stock_move_line.product_id.id]['internal_transfer'] -= stock_move_line.qty_done
 
         stock_move_line_ids = self.with_context({'check_from_date': True}).get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date)
-        move_line_ids = self.env['stock.move.line'].browse([i[0] for i in list(set(stock_move_line_ids))])
+        move_line_ids = self.env['stock.move.line'].sudo().browse([i[0] for i in list(set(stock_move_line_ids))])
         move_line_ids = move_line_ids.filtered(lambda l: (l.location_dest_id.get_warehouse() and l.location_dest_id.get_warehouse().id == self.warehouse_id.id))
         for stock_move_line in move_line_ids:
             if stock_move_line.product_id.id in product_list:
@@ -330,7 +330,7 @@ class StockInventoryReport(models.TransientModel):
 
     @api.multi
     def print_pivot(self):
-        movement_pivot_obj = self.env['inventory.movement.pivot']
+        movement_pivot_obj = self.env['inventory.movement.pivot'].sudo()
         movement_pivot_obj.search([]).unlink()
         product_list = self.get_products()
         for key in list(product_list.keys()):
