@@ -174,10 +174,14 @@ class StockInventoryReport(models.TransientModel):
 
         stock_move_line_ids = self.with_context({'check_from_date': True}).get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date)
         move_line_ids = self.env['stock.move.line'].sudo().browse([i[0] for i in list(set(stock_move_line_ids))])
-        move_line_ids = move_line_ids.filtered(lambda l: (l.location_dest_id.get_warehouse() and l.location_dest_id.get_warehouse().id == self.warehouse_id.id))
-        for stock_move_line in move_line_ids:
+        move_line_ids_dest = move_line_ids.filtered(lambda l: (l.location_dest_id.get_warehouse() and l.location_dest_id.get_warehouse().id == self.warehouse_id.id))
+        for stock_move_line in move_line_ids_dest:
             if stock_move_line.product_id.id in product_list:
                 product_list[stock_move_line.product_id.id]['initial_qty'] += stock_move_line.qty_done
+        move_line_ids_source = move_line_ids.filtered(lambda l: (l.location_id.get_warehouse() and l.location_id.get_warehouse().id == self.warehouse_id.id))
+        for stock_move_line in move_line_ids_source:
+            if stock_move_line.product_id.id in product_list:
+                product_list[stock_move_line.product_id.id]['initial_qty'] -= stock_move_line.qty_done
 
         for key in list(product_list.keys()):
             product_list[key]['balance_qty'] = product_list[key]['initial_qty'] + product_list[key]['received_qty'] - product_list[key]['delivered_qty'] + product_list[key]['internal_transfer'] + product_list[key]['adjustment']
