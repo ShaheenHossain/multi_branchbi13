@@ -5,18 +5,17 @@
         <div class="pos-sale-ticket kitchen_receipt" style="padding-right: 25px;">
             <strong>
                 <div class="pos-center-align"><t t-esc="order.formatted_validation_date"/> <t t-esc="order.name"/></div>
-                <br />
                 <t t-if="widget.pos.config.enable_invoive_prefix">
                     <div style="text-align:center;">
                         <b><h2><t t-esc ="receipt.ticket_number"/></h2></b>
                     </div>
                 </t>
-                <br/>
                 <div>
                     <center>
                         <t t-esc="receipt.dine_option"/>
                     </center>
                 </div>
+                <br />
                 <table class='receipt-orderlines'>
                     <thead>
                         <th width='40%'>Item</th>
@@ -42,7 +41,6 @@
                         <td class="pos-right-align rtl_layout">
                             <t t-esc="widget.format_currency_no_symbol(orderline.get_display_price())"/>
                         </td>
-                        <br/>
                     </tr>
                 </table>
                 <br />

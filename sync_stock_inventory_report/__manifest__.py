@@ -22,8 +22,6 @@
     'images': [
         'static/description/main_screen.jpg',
     ],
-    'price': 0.0,
-    'currency': 'EUR',
     'installable': True,
     'auto_install': False,
     'application': True,
