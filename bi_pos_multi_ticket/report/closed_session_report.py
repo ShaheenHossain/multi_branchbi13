@@ -2,11 +2,13 @@
 
 
 import logging
-from datetime import timedelta
+from datetime import timedelta,date,datetime
 from functools import partial
+
 
 import psycopg2
 import pytz
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 
 from odoo import api, fields, models, tools, _
 from odoo.tools import float_is_zero
@@ -31,40 +33,18 @@ class ClosedSessionReport(models.AbstractModel):
 		if not configs:
 			configs = self.env['pos.config'].search([])
 
-		user_tz = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
-		today = user_tz.localize(fields.Datetime.from_string(fields.Date.context_today(self)))
-		today = today.astimezone(pytz.timezone('UTC'))
-		if date_start:
-			date_start = fields.Datetime.from_string(date_start)
-		else:
-			# start by default today 00:00:00
-			date_start = today
-
-		if date_stop:
-			# set time to 23:59:59
-			date_stop = fields.Datetime.from_string(date_stop)
-		else:
-			# stop by default today 23:59:59
-			date_stop = today + timedelta(days=1, seconds=-1)
-
-		# avoid a date_stop smaller than date_start
-		date_stop = max(date_stop, date_start)
-
-		date_start = fields.Datetime.to_string(date_start)
-		date_stop = fields.Datetime.to_string(date_stop)
-
 		if sessions:
 			orders = self.env['pos.order'].search([
-				('date_order', '>=', date_start),
-				('date_order', '<=', date_stop),
+				('date_order', '>=', date_start+ ' 00:00:00'),
+				('date_order', '<=', date_stop+ ' 23:59:59'),
 				('state', 'in', ['paid','invoiced','done']),
 				('session_id.state','in', ['closed']),
 				('session_id', 'in', sessions.ids),
 				('config_id', 'in', configs.ids)])
 		if not sessions:
 			orders = self.env['pos.order'].search([
-				('date_order', '>=', date_start),
-				('date_order', '<=', date_stop),
+				('date_order', '>=', date_start+ ' 00:00:00'),
+				('date_order', '<=', date_stop+ ' 23:59:59'),
 				('state', 'in', ['paid','invoiced','done']),
 				('session_id.state','in', ['closed']),
 				('config_id', 'in', configs.ids)])
@@ -95,7 +75,7 @@ class ClosedSessionReport(models.AbstractModel):
 					old_subtotal = mypro[product]['price_subtotal']
 					mypro[product].update({
 					'product_id' :line.product_id.id,
-					'product_name' : line.product_id.name,
+					'product_name' : line.product_id.display_name,
 					'qty' : old_qty + line.qty,
 					'product' : line.product_id,
 					'price_subtotal' : old_subtotal+line.price_subtotal,
@@ -103,7 +83,7 @@ class ClosedSessionReport(models.AbstractModel):
 				else:
 					mypro.update({ product : {
 						'product_id' :line.product_id.id,
-						'product_name' : line.product_id.name,
+						'product_name' : line.product_id.display_name,
 						'qty' : line.qty,
 						'product' : line.product_id,
 						'price_subtotal' : line.price_subtotal,
@@ -134,9 +114,12 @@ class ClosedSessionReport(models.AbstractModel):
 			sessions_name += str(i.name)
 
 		configss = ', '.join(map(str,configs_name) )
-
+		# start_date = datetime.strptime(date_start,DEFAULT_SERVER_DATETIME_FORMAT).date()
+		# end_date = datetime.strptime(date_stop,DEFAULT_SERVER_DATETIME_FORMAT).date()
 		return {
 			'currency_precision': 2,
+			'start_date': date_start,
+			'end_date' : date_stop,
 			'total_paid': user_currency.round(total),
 			'payments': payments,
 			'company_name': self.env.user.company_id.name,

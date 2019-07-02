@@ -1,0 +1,46 @@
+
+
+v 12.0.0.1
+
+--> Tax Calculation is based on discount amount. (tax value is must be fix or else not given)
+--> journal entries are based on (actual amount - (discount_amount / order -line count)).
+This formula is for both product journal entry and account move line journal entry.
+
+
+v 12.0.0.2
+ 
+--> Solve issue of purchase discount while percentage is given.
+
+v 12.0.0.3
+
+--> Change calculation for discount on invoice journal and stock journal.
+
+v 12.0.0.4
+
+--> Change method of tax calculation, now after applying discount it will calculate tax
+for every SO,PO,Invoice/Bill lines.
+--> Add Field Amount After discount.
+--> Add amount untaxed, after discount, discount amount, discount type in sale ,invoice,purchase reports.
+
+v 12.0.0.5
+
+--> Add values of discount on a onchage of auto-complete purchase for Control vendor bills section.
+
+v 12.0.0.6
+
+--> Solve warning issue on auto-complete purchase order.
+--> Solve issue of not updating values on purchase order bill creations
+--> Solve issue of purchase bill report not printing on server.
+
+12.0.0.7
+module update, remove bi_manual_currency_exchange_rate code , individual module working properly
+
+12.0.0.8
+discount not update in invoice while create bill in po
+
+12.0.0.9
+remove 0.01 amount difference generate and po gives unbalance journal entires
+
+12.0.0.10
+remove installation errors.
+journal entries issue solved

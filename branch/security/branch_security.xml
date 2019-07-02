@@ -161,6 +161,7 @@
         <field name="global" eval="True"/>
         <field name="domain_force">['|',('branch_id','=',False),('branch_id','in',[branch.id for branch in user.branch_ids])]</field>
         <field name="groups" eval="[(4, ref('branch.group_branch_user_manager'))]"/>
+        <field name="active" eval="False"/>
     </record>
     
     <record id="location_branch_rule" model="ir.rule">
@@ -169,6 +170,7 @@
         <field name="global" eval="True"/>
         <field name="domain_force">['|',('branch_id','=',False),('branch_id','=',user.branch_id.id)]</field>
         <field name="groups" eval="[(4, ref('branch.group_branch_user'))]"/>
+        <field name="active" eval="False"/>
     </record>
 
     <record id="picking_type_branch_manager_rule" model="ir.rule">
