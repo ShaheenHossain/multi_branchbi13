@@ -31,15 +31,14 @@
                             
                             <th style="border: 0px ;" class="text-left">From Date : <span t-esc="data['start_date']"/></th>
                             
-                            <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                            <!-- <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                              <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                              -->
                              
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                             
+                            </tr>
+                            <tr>
                             <th style="border: 0px ;" class="text-left">To Date : <span t-esc="data['end_date']"/></th>
                             
                         </tr>
@@ -76,13 +75,13 @@
 
                                             <t t-set="total_sl" t-value="total_sl + line['sale_qty']"/>
 
-                                            <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['price']"/></td>
+                                            <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="'%.2f'% line['price']"/></td>
 
 
                                             <t t-set="total_prs" t-value="total_prs + line['price']"/>
 
 
-                                         <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['discount']"/></td>
+                                         <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="'%.2f'% line['discount']"/></td>
 
                                           <t t-set="total_dsc" t-value="total_dsc + line['discount']"/>
 
@@ -91,7 +90,7 @@
 
                                        <t t-set="total_nsa" t-value="total_nsa + line['net_sales']"/>
 
-                                       <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="line['vat']"/></td>
+                                       <td style="border-bottom: 2px solid black; border-top:2px solid black; border-left:2px solid black; border-right:2px solid black;"><span t-esc="'%.2f'% line['vat']"/></td>
 
                                        <t t-set="total_vat" t-value="total_vat + line['vat']"/>
 

@@ -15,6 +15,7 @@ except ImportError:
 
 class pos_fast_moving_wizard(models.TransientModel):
     _name = "pos.fast.moving.wizard"
+    _description = "POS Fast Moving"
 
     start_date = fields.Date(string="Start Date",required = True)
     end_date = fields.Date(string="End Date",required = True)
@@ -35,11 +36,11 @@ class pos_fast_moving_wizard(models.TransientModel):
         self.get_report_data(data)
 
         return {
-            'name': 'Inventory Report',
+            'name': 'Fast Moving Item Sales',
             'type': 'ir.actions.act_window',
             'view_type': 'pivot',
 
-            'view_mode': 'pivot',
+            'view_mode': 'pivot,graph',
             'context': {},
             'res_model': 'pos.pivot.fast.moving',
                
@@ -152,10 +153,10 @@ class pos_fast_moving_wizard(models.TransientModel):
         worksheet = workbook.add_sheet('Sheet 1')
         title = "Fast Moving Item Sales"
         worksheet.write(0, 3,'Start Date:')
-        worksheet.write(0, 4,str(self.start_date))
+        worksheet.write(0, 4,str(self.start_date.strftime("%d-%m-%Y")))
         worksheet.write(0, 1,self.warehouse_id.name)
         worksheet.write(0, 7,'End Date:')
-        worksheet.write(0, 8,str(self.end_date))
+        worksheet.write(0, 8,str(self.end_date.strftime("%d-%m-%Y")))
         
         worksheet.write_merge(1, 1, 1, 8, title, style=style_title)
         
@@ -229,7 +230,7 @@ class pos_fast_moving_wizard(models.TransientModel):
 
 class pos_xls_fast_report(models.TransientModel):
     _name = "pos.fast.moving.excel"
-    
+    _description = "POS fast moving Excel"
     
     excel_file = fields.Binary('Excel Report Fast Moving Item Sales')
     file_name = fields.Char('Excel File', size=64)

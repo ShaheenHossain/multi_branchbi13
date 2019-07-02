@@ -27,7 +27,7 @@
                             
                             <th style="border: 0px ;" class="text-left">From Date : <span t-esc="data['start_date']"/></th>
                             
-                            <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                            <!-- <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                              <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                              
@@ -35,8 +35,10 @@
                              <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                              <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
                              <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
-                            <th style="border: 0px ;" class="text-left">To Date : <span t-esc="data['end_date']"/></th>
+                             <th style="border: 0px ;" class="text-left">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th> -->
+                         </tr>
+                         <tr>
+                            <th style="border: 0px ;" class="text-left">To Date : <span t-esc="data['end_date']" /></th>
                             
                         </tr>
                 </table>
@@ -55,7 +57,7 @@
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Opening Balance Qty</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Received Qty</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Sales Qty</th>
-                            <th style="border: 3px solid black;background-color:silver;" class="text-center">Adjesment Qty</th>
+                            <th style="border: 3px solid black;background-color:silver;" class="text-center">Adjustment Qty</th>
 		                    <th style="border: 3px solid black;background-color:silver;" class="text-center">Balance</th>
                             
                             </tr>
@@ -107,6 +109,12 @@
                             
                             
                         </table>
+
+                        
+
+
+
+
                     
                 
                 

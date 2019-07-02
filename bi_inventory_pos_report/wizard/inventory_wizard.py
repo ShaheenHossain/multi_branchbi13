@@ -15,6 +15,7 @@ except ImportError:
 
 class inventory_report_wizard(models.TransientModel):
     _name = "inventory.report.wizard"
+    _description = "Inventory Report Wizard"
 
     start_date = fields.Date(string="Start Date",required = True)
     end_date = fields.Date(string="End Date",required = True)
@@ -43,19 +44,38 @@ class inventory_report_wizard(models.TransientModel):
             domain.append(('scheduled_date','<=',self.end_date))
 
         if self.warehouse_id :
-            domain.append(('picking_type_id.warehouse_id','=',self.warehouse_id.id))
-        if self.transfer_in_out:
-            domain.append(('picking_type_id.code','=',self.transfer_in_out))
+            domain.append(('branch_id','=',self.warehouse_id.branch_id.id))
+        # if self.transfer_in_out:
+        #     domain.append(('picking_type_id.code','=',self.transfer_in_out))
         stock_picking_rec = self.env['stock.picking'].search(domain)
 
       
 
         for res in stock_picking_rec :
             for line in res.move_ids_without_package :
+                quantity = 0
+                product_list = []
+                for line in res.move_ids_without_package :
+
+                  if line.picking_id.picking_type_id.code == 'internal':
+                    if self.transfer_in_out == 'incoming' :
+                        branch = res.location_id.branch_id.id
+
+                        warehouse_name = self.env['stock.warehouse'].search([('branch_id','=',branch)])
+
+                        if line.location_id.usage == 'inventory'  and line.location_dest_id.usage == 'internal':
+                            quantity = quantity + line.product_uom_qty
+
+                    if self.transfer_in_out == 'outgoing' :
+                        branch = res.location_dest_id.branch_id.id
+
+                        warehouse_name = self.env['stock.warehouse'].search([('branch_id','=',branch)])
+                        if line.location_id.usage == 'internal'  and line.location_dest_id.usage == 'inventory':
+                            quantity = quantity + line.product_uom_qty
 
 
-                a = self.env['inventory.pivot.report'].create({
-                            'warehouse_id' : self.warehouse_id.id,
+                    a = self.env['inventory.pivot.report'].create({
+                            'warehouse_id' : warehouse_name.id,
                            'source_doc' : res.origin,
                            'transfer_no' : res.name,
                            'date' : res.scheduled_date,
@@ -78,11 +98,11 @@ class inventory_report_wizard(models.TransientModel):
         self.get_report_data()
 
         return {
-            'name': 'Inventory Report',
+            'name': 'Items Transfer',
             'type': 'ir.actions.act_window',
             'view_type': 'pivot',
 
-            'view_mode': 'pivot',
+            'view_mode': 'pivot,graph',
             'context': {},
             'res_model': 'inventory.pivot.report',
                
@@ -98,31 +118,52 @@ class inventory_report_wizard(models.TransientModel):
         domain.append(('scheduled_date','<=',self.end_date))
 
       if self.warehouse_id :
-        domain.append(('picking_type_id.warehouse_id','=',self.warehouse_id.id))
+        domain.append(('branch_id','=',self.warehouse_id.branch_id.id))
 
-      if self.transfer_in_out:
-        domain.append(('picking_type_id.code','=',self.transfer_in_out))
+      # if self.transfer_in_out:
+      #   domain.append(('picking_type_id.code','=',self.transfer_in_out))
       stock_picking_rec = self.env['stock.picking'].search(domain)
 
       
       for res in stock_picking_rec :
         for line in res.move_ids_without_package :
+            quantity = 0
+            product_list = []
+            for line in res.move_ids_without_package :
 
-          vals.append({'warehouse_name' : self.warehouse_id.name,
-                       'source' : res.origin,
-                       'transfer' : res.name,
-                       'date' : res.scheduled_date,
-                       'product' : line.product_id.name,
-                       'description': line.product_id.name,
-                       'quantity' : line.product_uom_qty,
-                       'unit' : line.product_uom.name,
-                       'cost' : line.product_id.standard_price,
-                       'total_cost' : line.product_id.standard_price * line.product_uom_qty
+              if line.picking_id.picking_type_id.code == 'internal':
+                if self.transfer_in_out == 'incoming' :
+                    branch = res.location_id.branch_id.id
+
+                    warehouse_name = self.env['stock.warehouse'].search([('branch_id','=',branch)]).name
+
+                    if line.location_id.usage == 'inventory'  and line.location_dest_id.usage == 'internal':
+                        quantity = quantity + line.product_uom_qty
+
+                if self.transfer_in_out == 'outgoing' :
+                    branch = res.location_dest_id.branch_id.id
+
+                    warehouse_name = self.env['stock.warehouse'].search([('branch_id','=',branch)]).name
+                    if line.location_id.usage == 'internal'  and line.location_dest_id.usage == 'inventory':
+                        quantity = quantity + line.product_uom_qty
+
+
+
+                vals.append({'warehouse_name' : warehouse_name,
+                               'source' : res.origin,
+                               'transfer' : res.name,
+                               'date' : res.scheduled_date,
+                               'product' : line.product_id.name,
+                               'description': line.product_id.name,
+                               'quantity' : line.product_uom_qty,
+                               'unit' : line.product_uom.name,
+                               'cost' : line.product_id.standard_price,
+                               'total_cost' : line.product_id.standard_price * line.product_uom_qty
 
 
 
 
-            })
+                    })
 
 
       return vals
@@ -159,9 +200,9 @@ class inventory_report_wizard(models.TransientModel):
         worksheet = workbook.add_sheet('Sheet 1')
         title = "Items Transfer"
         worksheet.write(1, 1,'Start Date:')
-        worksheet.write(1, 2,str(self.start_date))
+        worksheet.write(1, 2,str(self.start_date.strftime("%d-%m-%Y")))
         worksheet.write(1, 9,'End Date:')
-        worksheet.write(1, 10,str(self.end_date))
+        worksheet.write(1, 10,str(self.end_date.strftime("%d-%m-%Y")))
         
         worksheet.write(0, 1,self.warehouse_id.name)
         if self.transfer_in_out == 'incoming':
@@ -224,8 +265,8 @@ class inventory_report_wizard(models.TransientModel):
 
 class inventory_xls_report(models.TransientModel):
     _name = "inventory.report.excel"
-    
-    
+    _description = "Inventory Report Excel"
+
     excel_file = fields.Binary('Excel Report Inventory')
     file_name = fields.Char('Excel File', size=64)
 

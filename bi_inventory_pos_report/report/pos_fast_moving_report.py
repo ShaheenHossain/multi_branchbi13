@@ -11,7 +11,8 @@ from odoo import models, api
 
 class pos_pdf_report(models.AbstractModel):
     _name = 'report.bi_inventory_pos_report.pos_fast_moving_pdf_template'
-    
+    _description = "Report Fast moving"
+
     @api.multi
     def _get_report_values(self, docids, data=None):
         data = data if data is not None else {}
@@ -19,10 +20,12 @@ class pos_pdf_report(models.AbstractModel):
         data  = { 'start_date': docs.start_date, 'end_date': docs.end_date,
                 'warehouse_id':docs.warehouse_id
                 }
-        
+        data1  = { 'start_date': docs.start_date.strftime("%d-%m-%Y"), 'end_date': docs.end_date.strftime("%d-%m-%Y"),
+                'warehouse_id':docs.warehouse_id
+                }
         return {
                    'doc_model': 'pos.fast.moving.wizard',
-                   'data' : data,
+                   'data' : data1,
 
                    
                    'get_lines':self._get_lines(data),

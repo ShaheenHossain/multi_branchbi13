@@ -1,0 +1,82 @@
+<openerp>
+<data>
+<template id="report_close_session">
+	<t t-call="web.html_container">
+	<t t-call="web.external_layout">
+		
+		<div class="page" style="padding-top='10px">
+			<div class="text-center">
+				<h2>Sales Details</h2>
+
+				<table  class="table table-sm">
+					<tbody>
+					<tr >
+						<td colspan="3" >Date</td><td>From:<t t-esc="date_start" t-options="{'widget': 'datetime'}"/> -To: <t t-esc="date_stop" t-options="{'widget': 'datetime'}"/></td>
+					</tr>
+					<tr >
+						<td colspan="3" >POS</td><td><t t-esc="configs_name"/></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- Orderlines -->
+			<h3>Products</h3>
+			<table  class="table table-sm">
+				<thead><tr>
+					<th>Product</th>
+					<th>Quantity</th>
+					<th style="text-align:right;">Total Amount</th>
+				</tr></thead>
+				<tbody>
+					<t t-foreach='products_data' t-as='line'>
+						<tr>
+							<td><t t-esc="line['product_name']" /></td>
+							<td>
+								<t t-esc="line['qty']" />
+							</td>
+							<td style="text-align:right;">
+								<t t-esc="line['price_subtotal']" t-options="{'widget': 'float', 'precision': currency_precision}" />
+							</td> 
+							
+						</tr>
+					</t>                  
+				</tbody>
+			</table>
+
+			<br/> 
+			<table  class="table table-sm">
+				<tbody>
+				<tr style="text-align:right;">
+					<td colspan="3" >Net Total Before VAT Amount</td><td><t t-esc="total_paid - taxes" t-options="{'widget': 'float', 'precision': currency_precision}"/></td>
+				</tr>
+				<tr style="text-align:right;">
+					<td colspan="3" >VAT Amount</td><td><t t-esc=" taxes" t-options="{'widget': 'float', 'precision': currency_precision}"/></td>
+				</tr>
+				<tr style="text-align:right;">
+					<td colspan="3" >Total after VAT Amount</td><td><t t-esc=" total_paid" t-options="{'widget': 'float', 'precision': currency_precision}"/></td>
+				</tr>
+				</tbody>
+			</table>
+			<br/>
+			<h3>Payments</h3>
+			<table  class="table table-sm">
+				<thead><tr>
+					<th>Name</th>
+					<th>Total</th>
+				</tr></thead>
+				<tbody>
+				<tr t-foreach='payments' t-as='payment'>
+					<td><t t-esc="payment['name']" /></td>
+					<td><t t-esc="payment['total']" t-options="{'widget': 'float', 'precision': currency_precision}"/></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</t>
+	</t>
+</template>
+
+
+</data>
+</openerp>

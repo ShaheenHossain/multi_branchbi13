@@ -79,7 +79,7 @@
         </record>
 
         <record id="action_view_inventory_movement_report" model="ir.actions.act_window">
-            <field name="name">Inventory Report</field>
+            <field name="name">Inventory Movement Report</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">inventory.movement.wizard</field>
             <field name="view_type">form</field>
@@ -89,7 +89,7 @@
         </record>
 
          <record id="action_view_inventory_pivot_movement" model="ir.actions.act_window">
-            <field name="name">Inventory Report</field>
+            <field name="name">Inventory Movement Report</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">inventory.movement.wizard</field>
             <field name="view_type">form</field>

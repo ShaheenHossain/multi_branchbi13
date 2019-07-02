@@ -50,7 +50,7 @@
         </record>
 
         <!-- This Menu Item Must have a parent -->
-        <menuitem id="branch_menu_res_branch" name="Branch" parent="base.menu_users" action="branch_action_res_branch" groups="base.group_no_one"/>
+        <menuitem id="branch_menu_res_branch" name="Branch"  parent="base.menu_users" action="branch_action_res_branch" />
 
     </data>
 </openerp>
