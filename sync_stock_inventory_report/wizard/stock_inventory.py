@@ -63,7 +63,9 @@ class StockInventoryReport(models.TransientModel):
         return from_str
 
     @api.multi
-    def get_where(self, location_ids=[], product_ids=[], from_date=False, to_date=False):
+    def get_where(self, location_ids=[], product_ids=[], from_date=False, to_date=False, location="all"):
+        warehouse_locations = locations = self.env['stock.location'].search([('company_id', '=', self.company_id.id)]).filtered(lambda l: l.get_warehouse() and l.get_warehouse().id == self.warehouse_id.id)
+
         if self.env.context.get('check_from_date'):
             to_date = to_date.strftime(DEFAULT_SERVER_DATE_FORMAT + ' ' + '00:00:01')
         else:
@@ -72,6 +74,8 @@ class StockInventoryReport(models.TransientModel):
         sml.qty_done > 0
         and sml.date < '%s'
         and sm.company_id = %d""" % (to_date, self.company_id.id)
+        # and sm.company_id = %d
+        # and sml.location_id in %s or sml.location_dest_id in %s""" % (to_date, self.company_id.id,tuple(warehouse_locations.ids), tuple(warehouse_locations.ids))
 
         # if self.warehouse_id:
         #     where_str = """%s
@@ -86,6 +90,21 @@ class StockInventoryReport(models.TransientModel):
         #     where_str = """%s
         #         and sml.branch_id is null
         #     """ % (where_str)
+
+        if location == "all":
+            where_str = """%s
+                and sml.location_id in %s or sml.location_dest_id in %s
+            """ % (where_str, tuple(warehouse_locations.ids), tuple(warehouse_locations.ids))
+
+        if location == "source":
+            where_str = """%s
+                and sml.location_id in %s
+            """ % (where_str, tuple(warehouse_locations.ids))
+
+        if location == "dest":
+            where_str = """%s
+                and sml.location_dest_id in %s
+            """ % (where_str, tuple(warehouse_locations.ids))
 
         if self.available_in_pos:
             where_str = """%s
@@ -113,7 +132,7 @@ class StockInventoryReport(models.TransientModel):
 
 
     @api.multi
-    def get_stock_move_line(self, location_ids=[], product_ids=[], product_categ_ids=[], from_date=False, to_date=False):
+    def get_stock_move_line(self, location_ids=[], product_ids=[], product_categ_ids=[], from_date=False, to_date=False, location="all"):
         cr = self._cr
         report_query = """select
                             sml.id
@@ -122,7 +141,7 @@ class StockInventoryReport(models.TransientModel):
                         where
                             %s""" % (self.get_from(product_categ_ids=product_categ_ids),
                                      self.get_where(location_ids=location_ids, product_ids=product_ids,
-                                                    from_date=from_date, to_date=to_date))
+                                                    from_date=from_date, to_date=to_date, location=location))
         cr.execute(report_query)
         return cr.fetchall()
 
@@ -134,9 +153,10 @@ class StockInventoryReport(models.TransientModel):
         internal_transfer = 0.0
         adjustment = 0.0
 
-        stock_move_line_ids = self.get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=self.from_date, to_date=self.to_date)
+        stock_move_line_ids = self.get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=self.from_date, to_date=self.to_date, location="all")
         move_line_ids = self.env['stock.move.line'].sudo().browse([i[0] for i in list(set(stock_move_line_ids))])
-        move_line_ids = move_line_ids.filtered(lambda l: (l.location_id.get_warehouse() and l.location_id.get_warehouse().id == self.warehouse_id.id) or (l.location_dest_id.get_warehouse() and l.location_dest_id.get_warehouse().id == self.warehouse_id.id))
+
+        # move_line_ids = move_line_ids.filtered(lambda l: (l.location_id.get_warehouse() and l.location_id.get_warehouse().id == self.warehouse_id.id) or (l.location_dest_id.get_warehouse() and l.location_dest_id.get_warehouse().id == self.warehouse_id.id))
         for stock_move_line in move_line_ids:
             move_uom_id = stock_move_line.product_uom_id
             product_uom_id = stock_move_line.product_id.uom_id
@@ -174,15 +194,20 @@ class StockInventoryReport(models.TransientModel):
             elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and (from_location_warehouse and from_location_warehouse.id == self.warehouse_id.id) and to_location_warehouse != from_location_warehouse:
                 product_list[stock_move_line.product_id.id]['internal_transfer'] -= move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id)
 
-        stock_move_line_ids = self.with_context({'check_from_date': True}).get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date)
+        stock_move_line_ids = self.with_context({'check_from_date': True}).get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date, location="source")
         move_line_ids = self.env['stock.move.line'].sudo().browse([i[0] for i in list(set(stock_move_line_ids))])
-        move_line_ids_dest = move_line_ids.filtered(lambda l: (l.location_dest_id.get_warehouse() and l.location_dest_id.get_warehouse().id == self.warehouse_id.id))
+        # move_line_ids_dest = move_line_ids.filtered(lambda l: (l.location_dest_id.get_warehouse() and l.location_dest_id.get_warehouse().id == self.warehouse_id.id))
+        move_line_ids_dest = move_line_ids
         for stock_move_line in move_line_ids_dest:
             move_uom_id = stock_move_line.product_uom_id
             product_uom_id = stock_move_line.product_id.uom_id
             if stock_move_line.product_id.id in product_list:
                 product_list[stock_move_line.product_id.id]['initial_qty'] += move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id)
-        move_line_ids_source = move_line_ids.filtered(lambda l: (l.location_id.get_warehouse() and l.location_id.get_warehouse().id == self.warehouse_id.id))
+
+        stock_move_line_ids = self.with_context({'check_from_date': True}).get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date, location="dest")
+        move_line_ids = self.env['stock.move.line'].sudo().browse([i[0] for i in list(set(stock_move_line_ids))])
+        # move_line_ids_source = move_line_ids.filtered(lambda l: (l.location_id.get_warehouse() and l.location_id.get_warehouse().id == self.warehouse_id.id))
+        move_line_ids_source = move_line_ids
         for stock_move_line in move_line_ids_source:
             move_uom_id = stock_move_line.product_uom_id
             product_uom_id = stock_move_line.product_id.uom_id
