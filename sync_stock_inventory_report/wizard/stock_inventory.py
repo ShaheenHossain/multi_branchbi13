@@ -176,23 +176,23 @@ class StockInventoryReport(models.TransientModel):
                     'product_uom_id': stock_move_line.product_id.uom_id.id,
                 }
             if stock_move_line.location_id.usage in ['supplier','production']:
-                product_list[stock_move_line.product_id.id]['received_qty'] += round(move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id), 2)
+                product_list[stock_move_line.product_id.id]['received_qty'] += round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
             elif stock_move_line.location_dest_id.usage in ['supplier','production']:
-                product_list[stock_move_line.product_id.id]['received_qty'] -= round(move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id), 2)
+                product_list[stock_move_line.product_id.id]['received_qty'] -= round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
             elif stock_move_line.location_dest_id.usage == 'customer':
-                product_list[stock_move_line.product_id.id]['delivered_qty'] += round(move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id), 2)
+                product_list[stock_move_line.product_id.id]['delivered_qty'] += round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
             elif stock_move_line.location_id.usage == 'customer':
-                product_list[stock_move_line.product_id.id]['delivered_qty'] -= round(move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id), 2)
+                product_list[stock_move_line.product_id.id]['delivered_qty'] -= round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
             elif stock_move_line.location_id.usage == 'inventory':
-                product_list[stock_move_line.product_id.id]['adjustment'] += round(move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id), 2)
+                product_list[stock_move_line.product_id.id]['adjustment'] += round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
             elif stock_move_line.location_dest_id.usage == 'inventory':
-                product_list[stock_move_line.product_id.id]['adjustment'] -= round(move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id), 2)
+                product_list[stock_move_line.product_id.id]['adjustment'] -= round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
             # elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and stock_move_line.move_id.location_id == stock_move_line.location_dest_id:
             elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and (to_location_warehouse and to_location_warehouse.id == self.warehouse_id.id) and to_location_warehouse != from_location_warehouse:
-                product_list[stock_move_line.product_id.id]['internal_transfer'] += round(move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id), 2)
+                product_list[stock_move_line.product_id.id]['internal_transfer'] += round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
             # elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and stock_move_line.move_id.location_id == stock_move_line.location_id:
             elif stock_move_line.move_id.picking_id.picking_type_id.code == 'internal' and (from_location_warehouse and from_location_warehouse.id == self.warehouse_id.id) and to_location_warehouse != from_location_warehouse:
-                product_list[stock_move_line.product_id.id]['internal_transfer'] -= round(move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id), 2)
+                product_list[stock_move_line.product_id.id]['internal_transfer'] -= round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
 
         stock_move_line_ids = self.with_context({'check_from_date': True}).get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date, location="dest")
         move_line_ids = self.env['stock.move.line'].sudo().browse([i[0] for i in list(set(stock_move_line_ids))])
@@ -202,7 +202,7 @@ class StockInventoryReport(models.TransientModel):
             move_uom_id = stock_move_line.product_uom_id
             product_uom_id = stock_move_line.product_id.uom_id
             if stock_move_line.product_id.id in product_list:
-                product_list[stock_move_line.product_id.id]['initial_qty'] += round(move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id), 2)
+                product_list[stock_move_line.product_id.id]['initial_qty'] += round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
 
         stock_move_line_ids = self.with_context({'check_from_date': True}).get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date, location="source")
         move_line_ids = self.env['stock.move.line'].sudo().browse([i[0] for i in list(set(stock_move_line_ids))])
@@ -212,10 +212,10 @@ class StockInventoryReport(models.TransientModel):
             move_uom_id = stock_move_line.product_uom_id
             product_uom_id = stock_move_line.product_id.uom_id
             if stock_move_line.product_id.id in product_list:
-                product_list[stock_move_line.product_id.id]['initial_qty'] -= round(move_uom_id._compute_quantity(stock_move_line.qty_done, product_uom_id), 2)
+                product_list[stock_move_line.product_id.id]['initial_qty'] -= round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
 
         for key in list(product_list.keys()):
-            product_list[key]['balance_qty'] = round(product_list[key]['initial_qty'] + product_list[key]['received_qty'] - product_list[key]['delivered_qty'] + product_list[key]['internal_transfer'] + product_list[key]['adjustment'], 2)
+            product_list[key]['balance_qty'] = round((product_list[key]['initial_qty'] + product_list[key]['received_qty'] - product_list[key]['delivered_qty'] + product_list[key]['internal_transfer'] + product_list[key]['adjustment']), 2)
         return product_list
 
     @api.multi
