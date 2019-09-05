@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="pos_order_type_assets" name="Point of Sale Order Type Assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/pos_order_type/static/src/js/models.js"></script>
+            <script type="text/javascript" src="/pos_order_type/static/src/js/popups.js"></script>
+            <script type="text/javascript" src="/pos_order_type/static/src/js/screens.js"></script>
+        </xpath>
+    </template>
+
+</odoo>

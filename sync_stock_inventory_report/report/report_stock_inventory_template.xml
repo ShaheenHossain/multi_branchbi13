@@ -29,6 +29,9 @@
                                         <th>
                                             <span>Available in POS</span>
                                         </th>
+                                        <th>
+                                            <span>Branches</span>
+                                        </th>
                                         <!-- <th class="text-left"><span>Locations</span></th> -->
                                     </tr>
                                 </thead>
@@ -45,7 +48,7 @@
                                             No
                                         </t>
                                     </td>
-
+                                    <td class="text-left"><p t-esc="o.get_branch_name()"/></td>
                                     <!-- <td class="text-left"><p t-esc="o.get_locations_name()"/></td> -->
                                 </tbody>
                             </table>

@@ -18,6 +18,7 @@
                     <field name="filter_by"/>
                     <field name="product_categ_ids" widget="many2many_tags" attrs="{'invisible': [('filter_by', '!=', 'category')]}" options="{'no_create_edit': 1, 'no_open': 1}"/>
                     <field name="product_ids" domain="[('company_id', 'in', [company_id,False])]" widget="many2many_tags" attrs="{'invisible': [('filter_by', '!=', 'product')]}" options="{'no_create_edit': 1, 'no_open': 1}"/>
+                    <field name="branch_ids" widget="many2many_tags"/>
                 </group>
                 <group attrs="{'invisible': [('data', '=', False)]}">
                     <field name="data" colspan="4" invisible="1"/>

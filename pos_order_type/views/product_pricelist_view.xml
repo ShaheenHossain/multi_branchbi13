@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="zero_pricelist_config_form_view" model="ir.ui.view">
+        <field name="name">zero.boolean.config.form</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <field name="currency_id" position="before">
+                <field name="has_zero_price"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

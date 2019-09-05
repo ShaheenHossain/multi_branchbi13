@@ -27,6 +27,7 @@ class StockInventoryReport(models.TransientModel):
     name = fields.Binary('Stock Inventory', readonly=True)
     pdf_report_data = fields.Binary('Stock Inventory', readonly=True)
     warehouse_id = fields.Many2one('stock.warehouse',string="Warehouse",required = True)
+    branch_ids = fields.Many2many('res.branch', string="Branches")
 
     @api.onchange('filter_by')
     def onchange_filter_by(self):
@@ -127,6 +128,11 @@ class StockInventoryReport(models.TransientModel):
             where_str = """%s
                             and sml.product_id in (%s)
                         """ % (where_str, ','.join(map(str,product_ids.ids)))
+
+        if self.branch_ids:
+            where_str = """%s
+                            and sml.branch_id in (%s)
+                        """ % (where_str, ','.join(map(str,self.branch_ids.ids)))
 
         return where_str
 
@@ -261,6 +267,9 @@ class StockInventoryReport(models.TransientModel):
         ws.write_merge(5, 5, 6, 7, "Available in POS", sub_header_style2)
         ws.write_merge(6, 6, 6, 7, 'Yes' if self.available_in_pos else 'No', sub_header_content_style2)
 
+        ws.write_merge(5, 5, 8, 9, "Branches", sub_header_style2)
+        ws.write_merge(6, 6, 8, 9, self.get_branch_name(), sub_header_content_style2)
+
         # ws.write_merge(5, 5, 4, 5, "Locations", sub_header_style2)
         # ws.write_merge(6, 6, 4, 5, ', '.join(self.location_ids.mapped('display_name')), sub_header_content_style2)
 
@@ -357,6 +366,13 @@ class StockInventoryReport(models.TransientModel):
             names = ', '.join(self.product_categ_ids.mapped('display_name'))
         if not names:
             names = 'All'
+        return names
+
+    @api.multi
+    def get_branch_name(self):
+        names = ''
+        if self.branch_ids:
+            names = ', '.join(self.branch_ids.mapped('name'))
         return names
 
     @api.multi

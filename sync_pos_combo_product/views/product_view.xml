@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_pos_form_combo" model="ir.ui.view">
+        <field name="name">pos.order.form</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <field name="note" position="after">
+                <group>
+                    <field name="note_tag_ids" widget="many2many_tags" options="{'no_create': True}" nolabel="1" readonly="1"/>
+                </group>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_combo_product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.common.form</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']/div[2]" position="after">
+                <div >
+                    <field name="is_combo"/>
+                    <label for="is_combo"/>
+                </div>
+            </xpath>
+            <xpath expr="//page[@name='inventory']" position="after">
+                <page string="Product Pack" name="Product Pack" attrs="{'invisible': [('is_combo','=', False)]}">
+                    <field name="sub_product_line_ids">
+                        <tree string="product combo" editable="bottom">
+                            <field name="is_required_product"/>
+                            <field name="is_include_in_main_product_price" attrs="{'readonly': [('is_required_product', '!=', True)]}"/>
+                            <field name="include_all"/>
+                            <field name="category_id"/>
+                            <field name="product_ids" widget="many2many_tags" domain="[('pos_categ_id', 'child_of', category_id or ''), ('available_in_pos', '=', True), ('is_combo', '=', False), ('type', '!=', 'service')]" context="{'default_available_in_pos': True}"/>
+                            <field name="no_of_items" nolabel="1"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+            <field name="description_sale" position="after">
+                <separator string="Notes for POS" colspan="4"/>
+                <field name="pos_notes" colspan="4" nolabel="1" placeholder="This note will be displayed on the POS."/>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="pos_product_notes_form_view" model="ir.ui.view">
+        <field name="name">pos.product_notes.form</field>
+        <field name="model">pos.product_notes</field>
+        <field name="arch" type="xml">
+            <form string="POS Product Notes">
+                <sheet>
+                    <group>
+                        <field name="name" required="1"/>
+                        <field name="pos_category_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="pos_product_notes_tree_view" model="ir.ui.view">
+        <field name="name">pos.product_notes.tree</field>
+        <field name="model">pos.product_notes</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="pos_category_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="pos_product_notes_action" model="ir.actions.act_window">
+        <field name="name">POS Product Notes</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos.product_notes</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to define a new notes.
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_pos_product_notes" action="pos_product_notes_action" parent="point_of_sale.menu_point_config_product" sequence="26" />
+
+</odoo>
