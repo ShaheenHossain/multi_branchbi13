@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_invoice_document_inherit_pos_combo" inherit_id="account.report_invoice_document">
+        <xpath expr="//address" position="before">
+            <t t-set="pos_order_id" t-value="request.env['pos.order'].sudo().search([('name', '=', o.reference)])"/>
+            <t t-esc="pos_order_id"/>
+        </xpath>
+        <xpath expr="//tbody[hasclass('invoice_tbody')]//tr[1]" position="attributes">
+            <attribute name="t-if">not line.parent_id</attribute>
+        </xpath>
+        <xpath expr="//tbody[hasclass('invoice_tbody')]//td[@name='account_invoice_line_name']" position="inside">
+            <t t-foreach="pos_order_id.lines" t-as="pos_line">
+                <t t-if="pos_line.sub_product_line == true">
+                    <t t-if="pos_line.parent_id == line.product_id and pos_line.name == line.pos_line_name">
+                        <br/><span> - <t t-esc="pos_line.product_id.display_name"/></span>
+                    </t>
+                </t>
+            </t>
+        </xpath>
+    </template>
+</odoo>

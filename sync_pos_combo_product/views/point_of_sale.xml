@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="assets" name="sync_pos_combo_product assets" inherit_id="point_of_sale.assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/sync_pos_combo_product/static/src/js/popups.js"></script>
+            <script type="text/javascript" src="/sync_pos_combo_product/static/src/js/gui.js"></script>
+            <script type="text/javascript" src="/sync_pos_combo_product/static/src/js/screens.js"></script>
+            <script type="text/javascript" src="/sync_pos_combo_product/static/src/js/models.js"></script>
+            <link rel="stylesheet" href="/sync_pos_combo_product/static/src/css/product_combo.css"/>
+        </xpath>
+    </template>
+
+</odoo>

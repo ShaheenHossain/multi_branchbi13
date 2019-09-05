@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-extend="SetPricelistButton">
+        <t t-jquery="div.o_pricelist_button" t-operation="attributes">
+            <attribute name="t-if">widget.pos.pricelists.length &gt; 2</attribute>
+        </t>
+    </t>
+
+    <t t-name="SetOrderTypeButton">
+        <div class='control-button o_ordertype_button'>
+            <i class='fa fa-id-card-o' role="img" aria-label="Order Type" title="Order Type"/> <t t-esc='widget.get_current_order_type()'/>
+        </div>
+    </t>
+
+    <t t-name="OrderTypePopupWidget">
+        <div role="dialog" class="modal-dialog">
+            <div class="popup popup-selection">
+                <header class="title"><t t-esc=" widget.options.title || 'Select' " /></header>
+                <div class='selection scrollable-y touch-scrollable'>
+                    <t t-foreach="widget.list || []" t-as="item">
+                        <div t-attf-class="selection-item {{ widget.is_selected.call(widget, item.item) ? 'selected' : '' }}" t-att-data-item-index='item_index'>
+                            <t t-esc='item.label'/>
+                        </div>
+                    </t>
+                </div>
+                <div style="margin-top: 20px;">
+                    <input type='hidden' value="" placeholder="Authorization Code"></input>
+                </div>
+                <footer class="footer">
+                    <div class="button confirm">
+                        Ok
+                    </div>
+                    <div class="button cancel">
+                        Cancel
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </t>
+</templates>

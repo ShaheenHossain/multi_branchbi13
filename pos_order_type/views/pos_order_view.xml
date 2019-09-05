@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_pos_form_order_type" model="ir.ui.view">
+        <field name="name">pos.order.form.order_type</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="authorised_user_id"/>
+            </field>
+            <field name="date_order" position="after">
+                <field name="order_type" string="Order For"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="pos_order_type_view_pos_order_filter" model="ir.ui.view">
+        <field name="name">pos.order.list.select</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_filter"/>
+        <field name="arch" type="xml">
+            <filter name="order_month" position="after">
+                <filter string="Order For" name="order_type" domain="[]" context="{'group_by':'order_type'}"/>
+            </filter>
+        </field>
+    </record>
+</odoo>
