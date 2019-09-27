@@ -108,7 +108,7 @@
             <br/>
         </t>
         <t t-jquery=".pos-sale-ticket" t-operation="attributes">
-            <attribute name="style">padding-right: 25px;</attribute>
+            <attribute name="style">padding-left: 80px;</attribute>
         </t>
 
         <t t-jquery="[t-esc='orderline.get_quantity_str_with_unit()']" t-operation="replace">
