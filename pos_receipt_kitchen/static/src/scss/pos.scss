@@ -19,10 +19,6 @@
     position: relative;
     margin-top: 30px;
 }
-//.o_rtl .pos-sale-ticket {
-//    padding-right: 0px !important;
-//    padding-left: 25px !important;
-//}
 
 .o_rtl .o_content .pos-right-align.rtl_layout {
     text-align: left !important;
@@ -38,5 +34,9 @@
 @media print {
     .pos .pos-sale-ticket.kitchen_receipt{
         font-size: 17px !important;
+    }
+    .o_rtl .pos .pos-sale-ticket {
+        padding-right: 25px !important;
+        padding-left: 0px !important;
     }
 }
