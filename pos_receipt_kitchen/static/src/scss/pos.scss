@@ -19,6 +19,10 @@
     position: relative;
     margin-top: 30px;
 }
+.o_rtl .pos-sale-ticket {
+    padding-right: 0 !important;
+    padding-left: 25px !important;
+}
 
 .o_rtl .o_content .pos-right-align.rtl_layout {
     text-align: left !important;

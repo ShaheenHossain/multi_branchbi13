@@ -209,6 +209,19 @@ class StockInventoryReport(models.TransientModel):
             product_uom_id = stock_move_line.product_id.uom_id
             if stock_move_line.product_id.id in product_list:
                 product_list[stock_move_line.product_id.id]['initial_qty'] += round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
+            if not stock_move_line.product_id.id in product_list and stock_move_line.qty_done:
+                product_list[stock_move_line.product_id.id] = {
+                    'product': stock_move_line.product_id.name,
+                    'product_id': stock_move_line.product_id.id,
+                    'product_code': stock_move_line.product_id.default_code,
+                    'initial_qty': round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2),
+                    'received_qty': 0.0,
+                    'delivered_qty': 0.0,
+                    'internal_transfer': 0.0,
+                    'adjustment': 0.0,
+                    'uom_id': stock_move_line.product_id.uom_id.name,
+                    'product_uom_id': stock_move_line.product_id.uom_id.id,
+                }
 
         stock_move_line_ids = self.with_context({'check_from_date': True}).get_stock_move_line(location_ids=self.location_ids, product_ids=self.product_ids, product_categ_ids=self.product_categ_ids, from_date=False, to_date=self.from_date, location="source")
         move_line_ids = self.env['stock.move.line'].sudo().browse([i[0] for i in list(set(stock_move_line_ids))])
@@ -219,9 +232,23 @@ class StockInventoryReport(models.TransientModel):
             product_uom_id = stock_move_line.product_id.uom_id
             if stock_move_line.product_id.id in product_list:
                 product_list[stock_move_line.product_id.id]['initial_qty'] -= round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2)
+            if not stock_move_line.product_id.id in product_list and stock_move_line.qty_done:
+                product_list[stock_move_line.product_id.id] = {
+                    'product': stock_move_line.product_id.name,
+                    'product_id': stock_move_line.product_id.id,
+                    'product_code': stock_move_line.product_id.default_code,
+                    'initial_qty': round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2),
+                    'received_qty': 0.0,
+                    'delivered_qty': 0.0,
+                    'internal_transfer': 0.0,
+                    'adjustment': 0.0,
+                    'uom_id': stock_move_line.product_id.uom_id.name,
+                    'product_uom_id': stock_move_line.product_id.uom_id.id,
+                }
 
         for key in list(product_list.keys()):
             product_list[key]['balance_qty'] = round((product_list[key]['initial_qty'] + product_list[key]['received_qty'] - product_list[key]['delivered_qty'] + product_list[key]['internal_transfer'] + product_list[key]['adjustment']), 2)
+
         return product_list
 
     @api.multi
@@ -352,8 +379,8 @@ class StockInventoryReport(models.TransientModel):
     @api.multi
     def generate_pdf_report(self):
         ctx = dict(self._context)
-        product_list = self.get_products()
-        ctx.update({'product_list' : product_list})
+        # product_list = self.get_products()
+        # ctx.update({'product_list' : product_list})
         report_action_ref = self.env.ref('sync_stock_inventory_report.action_report_stock_inventory')
         return report_action_ref.with_context(ctx).report_action(self)
 
