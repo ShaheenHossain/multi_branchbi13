@@ -35,4 +35,9 @@
     .pos .pos-sale-ticket.kitchen_receipt{
         font-size: 17px !important;
     }
+    .o_rtl .pos .pos-sale-ticket {
+        padding-right: 25px !important;
+        padding-left: 0px !important;
+    }
+
 }
