@@ -172,6 +172,7 @@ class StockInventoryReport(models.TransientModel):
                 product_list[stock_move_line.product_id.id] = {
                     'product': stock_move_line.product_id.name,
                     'product_id': stock_move_line.product_id.id,
+                    'product_categ_id': stock_move_line.product_id.categ_id.id,
                     'product_code': stock_move_line.product_id.default_code,
                     'initial_qty': 0.0,
                     'received_qty': 0.0,
@@ -213,6 +214,7 @@ class StockInventoryReport(models.TransientModel):
                 product_list[stock_move_line.product_id.id] = {
                     'product': stock_move_line.product_id.name,
                     'product_id': stock_move_line.product_id.id,
+                    'product_categ_id': stock_move_line.product_id.categ_id.id,
                     'product_code': stock_move_line.product_id.default_code,
                     'initial_qty': round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2),
                     'received_qty': 0.0,
@@ -236,6 +238,7 @@ class StockInventoryReport(models.TransientModel):
                 product_list[stock_move_line.product_id.id] = {
                     'product': stock_move_line.product_id.name,
                     'product_id': stock_move_line.product_id.id,
+                    'product_categ_id': stock_move_line.product_id.categ_id.id,
                     'product_code': stock_move_line.product_id.default_code,
                     'initial_qty': round(move_uom_id._compute_quantity(round(stock_move_line.qty_done, 2), product_uom_id), 2),
                     'received_qty': 0.0,
@@ -414,6 +417,7 @@ class StockInventoryReport(models.TransientModel):
         for key in list(product_list.keys()):
             movement_pivot_obj.create({
                 'product_id': product_list[key]['product_id'],
+                'product_categ_id': product_list[key]['product_categ_id'],
                 'uom_id': product_list[key]['product_uom_id'],
                 'initial_qty': product_list[key]['initial_qty'],
                 'delivered_qty': product_list[key]['delivered_qty'],
